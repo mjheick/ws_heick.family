@@ -16,18 +16,14 @@ body, input {
 	</head>
 	<body>
 		<div class="container">
-			<div class="row">
-				<div class="col text-center"><h1>Heick Family Tree</h1></div>
-			</div>
+<?php require_once("header.php"); ?>
 			<div class="row">
 				<div class="col text-center">Search: <input type="text" id="search" name="search" placeholder="Enter a name to search" value="" /></div>
 			</div>
 			<div id="search-results" class="row">
 				<div class="col"></div>
 			</div>
-			<div id="search-results" class="row">
-				<div class="col text-center"><small>&copy;2021 heick.family</small></div>
-			</div>
+<?php require_once("footer.php"); ?>
 		 </div>
 		<!-- Below needed for boostrap 4.6, per https://getbootstrap.com/docs/4.6/getting-started/introduction/ -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

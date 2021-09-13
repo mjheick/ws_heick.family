@@ -47,9 +47,7 @@ body, input {
 	</head>
 	<body>
 		<div class="container">
-			<div class="row">
-				<div class="col text-center"><h1>Heick Family Tree</h1></div>
-			</div>
+<?php require_once("header.php"); ?>
 			<!-- start of a bootstrap-geared family tree diagram -->
 			<div class="row"><!-- labels -->
 				<div class="col text-center"><small>Father</small></div>
@@ -128,7 +126,8 @@ body, input {
 			</div>
 			<hr />
 			<!-- Person information -->
-		 </div>
+<?php require_once("footer.php"); ?>
+		</div>
 		<!-- Below needed for boostrap 4.6, per https://getbootstrap.com/docs/4.6/getting-started/introduction/ -->
 		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
