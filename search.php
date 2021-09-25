@@ -27,8 +27,8 @@ while ($row = mysqli_fetch_assoc($result))
 	$response[] = [
 		'id' => $row['id'],
 		'fullname' => $row['fullname'],
-		'fullname' => $row['fullname'],
-		'fullname' => $row['fullname'],
+		'dob' => $row['dob'],
+		'dod' => $row['dod'],
 	];
 }
 
