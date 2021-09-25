@@ -17,7 +17,7 @@ if (strlen($data) < 3)
 }
 
 /* Search our names */
-require_once("Data.php");
+require_once("Classes.php");
 $db = new Data();
 $link = $db->getLink();
 $query = 'SELECT `id`, `fullname`, `dob`, `dod` FROM `person` WHERE `fullname` LIKE "%' . $db->escape($data) . '%" LIMIT 10';
