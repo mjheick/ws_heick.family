@@ -1,0 +1,3 @@
+#!/bin/bash
+
+mysqldump --host=localhost --user=heick.family --password=family.heick heick.family > database-schema.sql
