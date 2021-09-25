@@ -66,38 +66,8 @@ if (count($kids) > 0) {
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 		<title>heick.family</title>
-		<style>
-body, input {
-	background: black;
-	color: white;
-}
-.border-full {
-	border: 1px solid white;
-}
-.border-left {
-	border-left: 1px solid white;
-}
-.border-right {
-	border-right: 1px solid white;
-}
-.border-bottom {
-	border-bottom: 1px solid white;
-}
-
-#ft-person {
-	border: 1px solid white;
-}
-#ft-person-footer {
-	border-left: 1px solid white;
-	border-right: 1px solid white;
-}
-#ft-father-header {
-	border-right: 1px solid white;
-}
-#ft-mother-header {
-	border-left: 1px solid white;
-}
-		</style>
+		<link rel="stylesheet" href="/media/theme.css">
+		<link rel="stylesheet" href="/media/tree.css">
 	</head>
 	<body>
 		<div class="container">
