@@ -14,22 +14,38 @@ require_once("Data.php");
 $db = new Data();
 $link = $db->getLink();
 
+/* Clean shit up */
+$query = 'TRUNCATE `person`';
+mysqli_query($link, $query);
+$query = 'TRUNCATE `parents`';
+mysqli_query($link, $query);
+
 $names_to_make = 10000;
-while ($names_to_make > 0)
+echo "Making names: ";
+for ($x = 0; $x < $names_to_make; $x++)
 {
 
-    /* Make our data */
-    $name = $first[mt_rand(0, count($first)-1)] . ' ' .$middle[mt_rand(0, count($middle)-1)] . ' ' . $last[mt_rand(0, count($last)-1)];
-    $dob = mt_rand(1900, 1990) . '-0' . mt_rand(0, 9) . '-0' . mt_rand(0, 9);
-    $dod = mt_rand(1990, 2021) . '-0' . mt_rand(0, 9) . '-0' . mt_rand(0, 9);
+	/* Make our data */
+	$name = $first[mt_rand(0, count($first)-1)] . ' ' .$middle[mt_rand(0, count($middle)-1)] . ' ' . $last[mt_rand(0, count($last)-1)];
+	$dob = mt_rand(1900, 1990) . '-0' . mt_rand(1, 9) . '-0' . mt_rand(1, 9);
+	$dod = mt_rand(1990, 2021) . '-0' . mt_rand(1, 9) . '-0' . mt_rand(1, 9);
 
-    $name = $db->escape($name);
-    $dob = $db->escape($dob);
-    $dod = $db->escape($dod);
-    $query = 'INSERT INTO `person` (`fullname`, `dob`, `dod`) VALUES ("'.$name.'", "'.$dob.'", "'.$dod.'")';
-    mysqli_query($link, $query);
-
-    $names_to_make--;
+	$name = $db->escape($name);
+	$dob = $db->escape($dob);
+	$dod = $db->escape($dod);
+	$query = 'INSERT INTO `person` (`fullname`, `dob`, `dod`) VALUES ("'.$name.'", "'.$dob.'", "'.$dod.'")';
+	mysqli_query($link, $query);
 }
+echo "Done\n";
 
+echo "Making parents & kids: ";
+for ($x = 0; $x < $names_to_make; $x++)
+{
+	/* Make 2 parents */
+	for ($y = 0; $y < 2; $y++) {
+		$parent = mt_rand(0, $names_to_make); /* Random asexual parent possibility */
+		$query = 'INSERT INTO `parents` (`person`,`parent`) VALUES ("' . $x . '", "' . $parent . '")';
+		mysqli_query($link, $query);
+	}
+}
 echo "Done\n";
