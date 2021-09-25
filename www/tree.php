@@ -214,9 +214,16 @@ if (count($kids) > 0) { /* Start, kid/coparent logic */
 <?php
 	}
 } /* end, kid/coparent logic */
+
+/* If we have media lets display it */
 ?>
 			<hr />
-			<!-- Person information -->
+			<div class="row">
+				<div class="col text-center">
+				</div>
+			</div>
+			<hr />
+			<!-- upload media for this person -->
 <?php require_once("footer.php"); ?>
 		</div>
 		<!-- Below needed for boostrap 4.6, per https://getbootstrap.com/docs/4.6/getting-started/introduction/ -->
