@@ -45,17 +45,26 @@ while ($row = mysqli_fetch_assoc($result)) {
 /* If we have kids, continue on, else book outta here and start displaying */
 $coparent = [];
 if (count($kids) > 0) {
+	/* In case we no longer have other parents for known kids, we need a way to resolve them */
+	foreach($kids as $k) {
+		$kids_no_coparents[$k] = $child[$k];
+	}
 	/* Get other parents of above kids. 90% of the time it'll be one person, but sometimes it could be 30 */
-	$query = 'SELECT * FROM `parents` LEFT JOIN `person` ON `parent`=`id` WHERE `person` IN (' . implode(',', $kids) . ') AND NOT (`parent` = ' . $id . ')';
+	$query = 'SELECT * FROM `parents` LEFT JOIN `person` ON `parent`=`id` WHERE `person` IN (' . implode(',', $kids) . ')';
 	$result = mysqli_query($link, $query);
 	while ($row = mysqli_fetch_assoc($result)) {
-		if (!isset($coparent[$row['parent']])) {
-			$coparent[$row['parent']] = [
-				'person' => $row,
-				'kids' => []
-			];
+		if ($row['parent'] != $id) {
+			if (!isset($coparent[$row['parent']])) {
+				$coparent[$row['parent']] = [
+					'person' => $row,
+					'kids' => []
+				];
+			}
+			$coparent[$row['parent']]['kids'][] = $row['person'];
+			if (isset($kids_no_coparents[$row['person']])) {
+				unset($kids_no_coparents[$row['person']]);
+			}
 		}
-		$coparent[$row['parent']]['kids'][] = $row['person'];
 	}
 }
 
@@ -185,6 +194,41 @@ if (count($kids) > 0) { /* Start, kid/coparent logic */
 	}
 } /* end, kid/coparent logic */
 
+/* In case we have undefined/no-parent kids */
+if (count($kids_no_coparents) > 0) {
+	$display_kids = '';
+	$display_coparent = '?<br />?';
+	foreach ($kids_no_coparents as $kid_index => $kid_data) {
+		if (strlen($display_kids) > 0) { $display_kids .= '<br />'; }
+		$display_kids .= '<a href="tree.php?id=' . $kid_index . '">' . $child[$kid_index]['fullname'] . '</a> / ';
+		$dob = substr($child[$kid_index]['dob'], 0, 4);
+		if ($dob == '0000') { $display_kids .= '?'; } else { $display_kids .= $dob; }
+		$display_kids .= ' - ';
+		$dod = substr($child[$kid_index]['dod'], 0, 4);
+		if ($dob == '0000') { $display_kids .= '?'; } else { $display_kids .= $dod; }
+	}
+?>
+			<div class="row"><!-- draw a connecting line -->
+				<div class="col border-right">&nbsp;</div>
+				<div class="col"></div>
+			</div>
+			<div class="row">
+				<div class="col-3"></div>
+				<div class="col-4 text-center border-full"><?php echo $display_kids; ?></div>
+				<div class="col-1"><!-- nest for a horizontal connecting line -->
+					<div class="row">
+						<div class="col border-bottom">&nbsp;</div>
+					</div>
+					<div class="row">
+						<div class="col"></div>
+					</div>
+				</div>
+				<div class="col-3 text-center border-full"><?php echo $display_coparent; ?></div>
+				<div class="col-1"></div>
+			</div>
+<?php
+}
+
 /* If we have media lets display it */
 ?>
 			<hr />
@@ -196,8 +240,7 @@ if (count($kids) > 0) { /* Start, kid/coparent logic */
 			<!-- upload media for this person -->
 <?php require_once("footer.php"); ?>
 		</div>
-		<!-- Below needed for boostrap 4.6, per https://getbootstrap.com/docs/4.6/getting-started/introduction/ -->
-		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
 	</body>

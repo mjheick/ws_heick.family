@@ -20,7 +20,7 @@ mysqli_query($link, $query);
 $query = 'TRUNCATE `parents`';
 mysqli_query($link, $query);
 
-$names_to_make = 10000;
+$names_to_make = 50;
 echo "Making names: ";
 for ($x = 0; $x < $names_to_make; $x++)
 {
@@ -45,7 +45,9 @@ for ($x = 0; $x < $names_to_make; $x++)
 	for ($y = 0; $y < 2; $y++) {
 		$parent = mt_rand(0, $names_to_make); /* Random asexual parent possibility */
 		$query = 'INSERT INTO `parents` (`person`,`parent`) VALUES ("' . $x . '", "' . $parent . '")';
-		mysqli_query($link, $query);
+		if (mt_rand(0, 100) > 20) { // 20% chance we don't have a second parent
+			mysqli_query($link, $query);
+		}
 	}
 }
 echo "Done\n";

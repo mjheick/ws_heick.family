@@ -2,3 +2,10 @@ body, input {
 	background: black;
 	color: white;
 }
+.header-href {
+    color: white;
+}
+.header-href:hover {
+    color: white;
+    text-decoration: none;
+}
