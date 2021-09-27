@@ -10,6 +10,16 @@
 	<body>
 		<div class="container">
 <?php require_once("header.php"); ?>
+		<div class="row">
+			<div class="col text-center">
+				<button class="">Log in with Google</button>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col text-center">
+				<button class="">Log in with Facebook</button>
+			</div>
+		</div>
 <?php require_once("footer.php"); ?>
 		 </div>
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>

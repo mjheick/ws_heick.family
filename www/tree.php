@@ -233,8 +233,16 @@ if (count($kids_no_coparents) > 0) {
 ?>
 			<hr />
 			<div class="row">
-				<div class="col text-center">
-				</div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/a.jpg" /></div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/b.jpg" /></div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/a.jpg" /></div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/b.jpg" /></div>
+			</div>
+			<div class="row">
+				<div class="col"><img class="img-thumbnail" src="/media/family/b.jpg" /></div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/a.jpg" /></div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/b.jpg" /></div>
+				<div class="col"><img class="img-thumbnail" src="/media/family/a.jpg" /></div>
 			</div>
 			<hr />
 			<!-- upload media for this person -->
