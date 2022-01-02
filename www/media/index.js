@@ -10,7 +10,7 @@ $(document).ready(function() {
 					if (data && (data.length > 0)) {
 						resultsMessage = '';
 						for (let x = 0; x < data.length; x++) {
-							resultsMessage += '<div class="row"><div class="col text-center"><a href="tree.php?id=' + data[x].id + '">' + data[x].fullname + '</a></div></div>';
+							resultsMessage += '<div class="row"><div class="col text-center background-black"><a href="tree.php?id=' + data[x].id + '">' + data[x].fullname + '</a></div></div>';
 						}
 					}
 					$("#search-results").html('<div class="col text-center">' + resultsMessage + '</div>');

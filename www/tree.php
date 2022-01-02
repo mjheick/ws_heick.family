@@ -88,7 +88,7 @@ if (count($kids) > 0) {
 				<div class="col text-center"><small>Parent</small></div>
 			</div>
 			<div class="row"><!-- People -->
-				<div class="col text-center border-full"><?php
+				<div class="col text-center border-full background-black"><?php
 if (isset($parent[0])) {
 	echo '<a href="tree.php?id=' . $parent[0]['id'] . '">' . $parent[0]['fullname'] . '</a><br />';
 	$dob = substr($parent[0]['dob'], 0, 4);
@@ -101,7 +101,7 @@ if (isset($parent[0])) {
 }
 ?></div>
 				<div class="col"></div>
-				<div class="col text-center border-full"><?php
+				<div class="col text-center border-full background-black"><?php
 if (isset($parent[1])) {
 	echo '<a href="tree.php?id=' . $parent[1]['id'] . '">' . $parent[1]['fullname'] . '</a><br />';
 	$dob = substr($parent[1]['dob'], 0, 4);
@@ -130,7 +130,7 @@ if (isset($parent[1])) {
 						<div class="col"></div>
 					</div>
 				</div>
-				<div class="col text-center border-full"><?php
+				<div class="col text-center border-full background-black"><?php
 echo $me['fullname'] . '<br />';
 $dob = substr($me['dob'], 0, 4);
 if ($dob == '0000') { echo '?'; } else { echo $dob; }
@@ -178,7 +178,7 @@ if (count($kids) > 0) { /* Start, kid/coparent logic */
 			</div>
 			<div class="row">
 				<div class="col-3"></div>
-				<div class="col-4 text-center border-full"><?php echo $display_kids; ?></div>
+				<div class="col-4 text-center border-full background-black"><?php echo $display_kids; ?></div>
 				<div class="col-1"><!-- nest for a horizontal connecting line -->
 					<div class="row">
 						<div class="col border-bottom">&nbsp;</div>
@@ -187,7 +187,7 @@ if (count($kids) > 0) { /* Start, kid/coparent logic */
 						<div class="col"></div>
 					</div>
 				</div>
-				<div class="col-3 text-center border-full"><?php echo $display_coparent; ?></div>
+				<div class="col-3 text-center border-full background-black"><?php echo $display_coparent; ?></div>
 				<div class="col-1"></div>
 			</div>
 <?php
@@ -214,7 +214,7 @@ if (count($kids_no_coparents) > 0) {
 			</div>
 			<div class="row">
 				<div class="col-3"></div>
-				<div class="col-4 text-center border-full"><?php echo $display_kids; ?></div>
+				<div class="col-4 text-center border-full background-black"><?php echo $display_kids; ?></div>
 				<div class="col-1"><!-- nest for a horizontal connecting line -->
 					<div class="row">
 						<div class="col border-bottom">&nbsp;</div>
@@ -223,7 +223,7 @@ if (count($kids_no_coparents) > 0) {
 						<div class="col"></div>
 					</div>
 				</div>
-				<div class="col-3 text-center border-full"><?php echo $display_coparent; ?></div>
+				<div class="col-3 text-center border-full background-black"><?php echo $display_coparent; ?></div>
 				<div class="col-1"></div>
 			</div>
 <?php

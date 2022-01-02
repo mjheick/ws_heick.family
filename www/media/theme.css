@@ -2,10 +2,25 @@ body, input {
 	background: black;
 	color: white;
 }
+a {
+    color: yellow;
+}
+a:hover {
+    color: goldenrod;
+    text-decoration: none;
+}
 .header-href {
     color: white;
 }
 .header-href:hover {
     color: white;
     text-decoration: none;
+}
+body {
+    background-image: url('/media/family-tree-fixed.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.background-black {
+	background-color: black;
 }
