@@ -13,7 +13,7 @@ $(document).ready(function() {
 							resultsMessage += '<div class="row"><div class="col text-center background-black"><a href="tree.php?id=' + data[x].id + '">' + data[x].fullname + '</a></div></div>';
 						}
 					}
-					$("#search-results").html('<div class="col text-center">' + resultsMessage + '</div>');
+					$("#search-results").html('<div class="col text-center background-black">' + resultsMessage + '</div>');
 				}
 			});
 		} else {

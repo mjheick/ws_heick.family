@@ -1,12 +1,17 @@
-body, input {
+body, input, table, tr, td {
 	background: black;
 	color: white;
 }
+th, td {
+    text-align: center;
+}
 a {
     color: yellow;
+    background: black;
 }
 a:hover {
     color: goldenrod;
+    background: black;
     text-decoration: none;
 }
 .header-href {

@@ -10,6 +10,10 @@
 .border-bottom {
 	border-bottom: 1px solid white;
 }
+.border-top {
+	border-top: 1px solid white;
+}
+
 .background-black {
 	background-color: black;
 }
