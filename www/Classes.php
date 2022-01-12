@@ -6,4 +6,3 @@ error_reporting(E_ALL);
 
 $path = '../lib/';
 require_once($path . 'Family.php');
-require_once($path . 'Data.php');

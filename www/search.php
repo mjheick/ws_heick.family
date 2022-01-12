@@ -18,17 +18,15 @@ if (strlen($data) < 3)
 
 /* Search our names */
 require_once("Classes.php");
-$db = new Data();
-$link = $db->getLink();
-$query = 'SELECT `id`, `fullname`, `dob`, `dod` FROM `person` WHERE `fullname` LIKE "%' . $db->escape($data) . '%" LIMIT 10';
-$result = mysqli_query($link, $query);
-while ($row = mysqli_fetch_assoc($result))
+$results = Family::Search($data);
+$response = [];
+foreach ($results as $item)
 {
 	$response[] = [
-		'id' => $row['id'],
-		'fullname' => $row['fullname'],
-		'dob' => $row['dob'],
-		'dod' => $row['dod'],
+		'id' => $item['id'],
+		'fullname' => $item['name'],
+		'dob' => $item['dob'],
+		'dod' => $item['dod']
 	];
 }
 
