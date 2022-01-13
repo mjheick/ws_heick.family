@@ -15,6 +15,31 @@ if (is_null($me)) {
 	die();
 }
 
+/* Get the main Lineage handled */
+$parentx = Family::getPerson($me['parent-x']);
+$parenty = Family::getPerson($me['parent-y']);
+$lineage = [
+	'me' => ['id' => $me['id'], 'name' => Family::formatName($me)],
+	'partner' => ['id' => $me['partner'], 'name' => Family::formatName(Family::getPerson($me['partner']))],
+	'px' => ['id' => $me['parent-x'], 'name' => Family::formatName(Family::getPerson($me['parent-x']))],
+	'py' => ['id' => $me['parent-y'], 'name' => Family::formatName(Family::getPerson($me['parent-y']))],
+	'pxgx' => ['id' => $parentx['parent-x'], 'name' => Family::formatName(Family::getPerson($parentx['parent-x']))],
+	'pxgy' => ['id' => $parentx['parent-y'], 'name' => Family::formatName(Family::getPerson($parentx['parent-y']))],
+	'pygx' => ['id' => $parenty['parent-x'], 'name' => Family::formatName(Family::getPerson($parenty['parent-x']))],
+	'pygy' => ['id' => $parenty['parent-y'], 'name' => Family::formatName(Family::getPerson($parenty['parent-y']))],
+];
+function showMember($l)
+{
+	if ($l['id'] == 0)
+	{
+		echo $l['name'];
+	}
+	else
+	{
+		echo '<a href="?id=' . $l['id'] . '">' . $l['name'] . '</a>';
+	}
+}
+
 ?><!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -45,7 +70,7 @@ if (is_null($me)) {
 			</div>
 			<div class="row">
 				<div class="col-8">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black">Paternal Grandfather</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgx']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-6">&nbsp;</div>
@@ -53,7 +78,7 @@ if (is_null($me)) {
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black">Dad</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['px']); ?></div>
 				<div class="col-4">&nbsp;</div>
 			</div>
 			<div class="row">
@@ -62,14 +87,14 @@ if (is_null($me)) {
 			</div>
 			<div class="row">
 				<div class="col-8">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black">Paternal Grandmother</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgy']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-6">&nbsp;</div>
 				<div class="col-6">&nbsp;</div>
 			</div>
 			<div class="row">
-				<div class="col-4 text-center border-full background-black">You</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['me']); ?></div>
 				<div class="col-8">&nbsp;</div>
 			</div>
 			<div class="row">
@@ -78,7 +103,7 @@ if (is_null($me)) {
 			</div>
 			<div class="row">
 				<div class="col-8">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black">Maternal Grandfather</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pygx']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-6">&nbsp;</div>
@@ -86,7 +111,7 @@ if (is_null($me)) {
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black">Mom</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['py']); ?></div>
 				<div class="col-4">&nbsp;</div>
 			</div>
 			<div class="row">
@@ -94,24 +119,46 @@ if (is_null($me)) {
 				<div class="col-6">&nbsp;</div>
 			</div>
 			<div class="row">
-				<div class="col-4 text-center border-full background-black">Partner</div>
+				<?php
+if ($lineage['partner']['id'] == 0)
+{
+	echo '<div class="col-4">&nbsp;</div>';
+}
+else
+{
+	echo '<div class="col-4 text-center border-full background-black">';
+	showMember($lineage['partner']);
+	echo '</div>';
+}
+				?>
 				<div class="col-4">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black">Maternal Grandmother</div>
+				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pygy']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-12">&nbsp;</div>
 			</div>
 			<!-- End: Lineage -->
-
+<?php
+$children = Family::getChildren($id);
+if (count($children) > 0)
+{ /* Start of children block */
+?>
 			<ul class="nav nav-tabs justify-content-center">
 				<li class="nav-item">
 					<a class="nav-link active" id='tab-children' href="#">Children</a>
 				</li>
 			</ul>
 			<div class="row">
-				<div class="col">Children</div>
+				<div class="col"><pre><?php var_export($children); ?></div>
 			</div>
-
+<?php
+} /* End of children block */
+?>
+<?php
+$siblings = Family::getSiblings($id);
+if (count($siblings) > 0)
+{ /* Start of siblings block */
+?>
 			<ul class="nav nav-tabs justify-content-center">
 				<li class="nav-item">
 					<a class="nav-link active" id='tab-siblings' href="#">Siblings</a>
@@ -137,6 +184,9 @@ if (is_null($me)) {
 					</table>
 				</div>
 			</div>
+<?php
+} /* End of siblings block */
+?>
 <?php require_once("footer.php"); ?>
 		</div>
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>

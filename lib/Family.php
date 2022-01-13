@@ -18,6 +18,8 @@ class Family
 
 	/**
 	 * Gets a persons information via an integer identifier
+	 * 
+	 * @todo add caching to this, since it'll be heavily used. prob wanna think about APC
 	 *
 	 * @param integer pk into family table
 	 * @return null|array null if nothing, array of data
@@ -27,6 +29,10 @@ class Family
 		$data = null;
 		$query = 'SELECT * FROM `family` WHERE `id`=' . self::_escape($id) . ' LIMIT 1';
 		$result = self::_query($query);
+		if ($result === false)
+		{
+			return null;
+		}
 		while ($row = mysqli_fetch_assoc($result))
 		{
 			$data = $row;
@@ -73,6 +79,150 @@ class Family
 	}
 
 	/**
+	 * Returns all natural children and "other" parents of children
+	 *
+	 * @param integer pk into family table
+	 * @return array keys are other parents, values are shared children
+	 */
+	public static function getChildren($id = 0)
+	{
+		$data = [];
+		$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . self::_escape($id) . ' OR `parent-y`=' . self::_escape($id) . ')';
+		$result = self::_query($query);
+		while ($row = mysqli_fetch_assoc($result))
+		{
+			$child = $row['id']; /* This is our kid */
+			if ($row['parent-x'] == $id)
+			{
+				$partner = $row['parent-y'];
+			}
+			else
+			{
+				$partner = $row['parent-x'];
+			}
+			if (!isset($data[$partner]))
+			{
+				$data[$partner] = [];
+			}
+			$data[$partner][] = $child;
+		}
+		return $data;
+	}
+
+	/**
+	 * Returns all siblings: full, half, and step
+	 * 
+	 * @param integer pk into family table
+	 * @return array keys to indexes of siblings. keys will exist if items are present.
+	 *               'full' => [],
+	 *               'half' => [],
+	 *               'step' => [],
+	 */
+	public static function getSiblings($id = 0)
+	{
+		$data = [];
+		/* Get me. Validate we have a parent. */
+		$me = self::getPerson($id);
+		if (is_null($me))
+		{
+			return $data;
+		}
+		$parentx = $me['parent-x'];
+		$parenty = $me['parent-y'];
+
+		/* Do a search for full blooded siblings. can only do this if we know both parents */
+		if (($parentx > 0) && ($parenty > 0))
+		{
+			$full_siblings = [];
+			$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . $parentx . ' AND `parent-y`=' . $parenty . ') OR (`parent-x`=' . $parenty . ' AND `parent-y`=' . $parentx . ')';
+			$result = self::_query($query);
+			while ($row = mysqli_fetch_assoc($result))
+			{
+				if ($row['id'] != $id) /* Don't need to count me in */
+				{
+					$full_siblings[] = $row['id'];
+				}
+			}
+			if (count($full_siblings) > 0)
+			{
+				$data['full'] = $full_siblings;
+			}
+		}
+
+		/* Do a search for half blooded siblings. only need to know one parent */
+		if (($parentx > 0) || ($parenty > 0))
+		{
+			$half_siblings = [];
+			$parents = [];
+			if ($parentx > 0)
+			{
+				$parents[] = $parentx;
+			}
+			if ($parenty > 0)
+			{
+				$parents[] = $parenty;
+			}
+			foreach ($parents as $parent)
+			{
+				$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . $parent . ' OR `parent-y`=' . $parent . ')';
+				$result = self::_query($query);
+				while ($row = mysqli_fetch_assoc($result))
+				{
+					if ($row['id'] != $id) /* Don't need to count me in */
+					{
+						$half_siblings[] = $row['id'];
+					}
+				}
+			}
+			if (count($half_siblings) > 0)
+			{
+				$data['half'] = $half_siblings;
+			}
+		}
+
+		/* Do a search for step siblings. only need to know one parents partner */
+		if (($parentx > 0) || ($parenty > 0))
+		{
+			$step_siblings = [];
+			$parents = [];
+			if ($parentx > 0)
+			{
+				$parents[] = $parentx;
+			}
+			if ($parenty > 0)
+			{
+				$parents[] = $parenty;
+			}
+			$step_parents = [];
+			foreach ($parents as $parent)
+			{
+				$them = self::getPerson($parent);
+				if ($them['partner'] > 0)
+				{
+					$step_parents[] = $p['partner'];
+				}
+			}
+			foreach ($step_parents as $step_parent)
+			{
+				$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . $step_parent . ' OR `parent-y`=' . $step_parent . ')';
+				$result = self::_query($query);
+				while ($row = mysqli_fetch_assoc($result))
+				{
+					if ($row['id'] != $id) /* Don't need to count me in, but it should NEVER happen here lol */
+					{
+						$step_siblings[] = $row['id'];
+					}
+				}
+			}
+			if (count($step_siblings) > 0)
+			{
+				$data['step'] = $step_siblings;
+			}
+		}
+		return $data;
+	}
+
+	/**
 	 * Searches names and returns data based on query
 	 *
 	 * @param string what to search for
@@ -90,6 +240,21 @@ class Family
 			$data[] = $row;
 		}
 		return $data;
+	}
+
+	/**
+	 * Formats a name as presented from getPerson for display
+	 *
+	 * @param array fields presented from getPerson or anything related
+	 * @return string a displayable name
+	 */
+	public static function formatName($id = [])
+	{
+		if (is_null($id) || !is_array($id))
+		{
+			return 'Unknown';
+		}
+		return $id['name'];
 	}
 
 	/**
