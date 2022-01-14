@@ -1,5 +1,5 @@
 <?php
-require_once("Classes.php");
+require_once("Family.php");
 
 /* In order to display this page we need an ID */
 $id = isset($_GET['id']) ? intval($_GET['id']) : null;
