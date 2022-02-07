@@ -66,57 +66,69 @@ function showMember($l)
 			</div>
 			<!-- Start: Lineage -->
 			<div class="row">
-				<div class="col-12">&nbsp;</div>
-			</div>
-			<div class="row">
-				<div class="col-8">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgx']); ?></div>
-			</div>
-			<div class="row">
-				<div class="col-6">&nbsp;</div>
-				<div class="col-6">&nbsp;</div>
-			</div>
-			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['px']); ?></div>
+				<div class="col-4">&nbsp;</div>
 				<div class="col-4">&nbsp;</div>
 			</div>
 			<div class="row">
-				<div class="col-6">&nbsp;</div>
-				<div class="col-6">&nbsp;</div>
-			</div>
-			<div class="row">
-				<div class="col-8">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgy']); ?></div>
-			</div>
-			<div class="row">
-				<div class="col-6">&nbsp;</div>
-				<div class="col-6">&nbsp;</div>
-			</div>
-			<div class="row">
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['me']); ?></div>
-				<div class="col-8">&nbsp;</div>
-			</div>
-			<div class="row">
-				<div class="col-6">&nbsp;</div>
-				<div class="col-6">&nbsp;</div>
-			</div>
-			<div class="row">
-				<div class="col-8">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pygx']); ?></div>
-			</div>
-			<div class="row">
-				<div class="col-6">&nbsp;</div>
-				<div class="col-6">&nbsp;</div>
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4">&nbsp;</div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgx']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['py']); ?></div>
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['px']); ?></div>
+				<div class="col-4 border-left">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgy']); ?></div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
 				<div class="col-4">&nbsp;</div>
 			</div>
 			<div class="row">
-				<div class="col-6">&nbsp;</div>
-				<div class="col-6">&nbsp;</div>
+				<div title="self" class="col-4 text-center border-full background-black"><?php showMember($lineage['me']); ?></div>
+				<div class="col-4 border-left">&nbsp;</div>
+				<div class="col-4">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+				<div class="col-4">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pygx']); ?></div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['py']); ?></div>
+				<div class="col-4 border-left">&nbsp;</div>
+			</div>
+			<div class="row">
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4">&nbsp;</div>
+				<div class="col-4 border-left">&nbsp;</div>
 			</div>
 			<div class="row">
 				<?php
@@ -126,13 +138,13 @@ if ($lineage['partner']['id'] == 0)
 }
 else
 {
-	echo '<div class="col-4 text-center border-full background-black">';
+	echo '<div title="partner" class="col-4 text-center border-full background-black">';
 	showMember($lineage['partner']);
 	echo '</div>';
 }
 				?>
 				<div class="col-4">&nbsp;</div>
-				<div class="col-4 text-center border-full background-black"><?php showMember($lineage['pygy']); ?></div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pygy']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-12">&nbsp;</div>
