@@ -176,7 +176,23 @@ class Family
 			}
 			if (count($half_siblings) > 0)
 			{
-				$data['half'] = $half_siblings;
+				if (count($data['full']) > 0)
+				{
+					/* If we have 'full' siblings we'll need to cull them out of this list */
+					$data['half'] = [];
+					foreach ($half_siblings as $p)
+					{
+						if (!in_array($p, $data['full']))
+						{
+							$data['half'][] = $p;
+
+						}
+					}
+				}
+				else
+				{
+					$data['half'] = $half_siblings;
+				}
 			}
 		}
 
@@ -199,7 +215,7 @@ class Family
 				$them = self::getPerson($parent);
 				if ($them['partner'] > 0)
 				{
-					$step_parents[] = $p['partner'];
+					$step_parents[] = $them['partner'];
 				}
 			}
 			foreach ($step_parents as $step_parent)
@@ -216,7 +232,23 @@ class Family
 			}
 			if (count($step_siblings) > 0)
 			{
-				$data['step'] = $step_siblings;
+				if (count($data['half']) > 0)
+				{
+					/* If we have 'half' siblings we'll need to cull them out of this list. queries are too "near" */
+					$data['step'] = [];
+					foreach ($step_siblings as $p)
+					{
+						if (!in_array($p, $data['half']))
+						{
+							$data['step'][] = $p;
+
+						}
+					}
+				}
+				else
+				{
+					$data['step'] = $step_siblings;
+				}
 			}
 		}
 		return $data;
