@@ -161,8 +161,39 @@ if (count($children) > 0)
 				</li>
 			</ul>
 			<div class="row">
-				<div class="col"><pre><?php var_export($children); ?></div>
+				<div class="col-12">&nbsp;</div>
 			</div>
+<?php
+foreach ($children as $parent => $childs)
+{
+	echo "\t\t\t" . '<div class="row">' . "\n";
+	echo "\t\t\t\t" . '<div class="col-4">&nbsp;</div>' . "\n";
+	echo "\t\t\t\t" . '<div class="col-2 background-black">Parent</div>' . "\n";
+	echo "\t\t\t\t" . '<div class="col-4 background-black">';
+	$parent_info = Family::getPerson($parent);
+	showMember(['id' => $parent_info['id'], 'name' => Family::formatName($parent_info)]);
+	echo '</div>' . "\n";
+	echo "\t\t\t\t" . '<div class="col-2">&nbsp;</div>' . "\n";
+	echo "\t\t\t" . '</div>' . "\n";
+
+	echo "\t\t\t" . '<div class="row">' . "\n";
+	echo "\t\t\t\t" . '<div class="col-4">&nbsp;</div>' . "\n";
+	echo "\t\t\t\t" . '<div class="col-2 background-black">Children</div>' . "\n";
+	echo "\t\t\t\t" . '<div class="col-4 background-black">';
+	foreach ($childs as $c)
+	{
+		$child_info = Family::getPerson($c);
+		showMember(['id' => $child_info['id'], 'name' => Family::formatName($child_info)]);
+		echo '<br>';
+	}
+	echo '</div>' . "\n";
+	echo "\t\t\t\t" . '<div class="col-2">&nbsp;</div>' . "\n";
+	echo "\t\t\t" . '</div>' . "\n";
+	echo "\t\t\t" . '<div class="row">' . "\n";
+	echo "\t\t\t" . '<div class="col-12">&nbsp;</div>' . "\n";
+	echo "\t\t\t" . '</div>' . "\n";
+}
+?>
 <?php
 } /* End of children block */
 ?>
@@ -178,6 +209,7 @@ if (count($siblings) > 0)
 			</ul>
 			<div class="row">
 				<div class="col">
+					<!-- fixed width table columns per https://stackoverflow.com/questions/15115052/how-to-set-up-fixed-width-for-td -->
 					<table class="table">
 						<thead>
 							<tr>
@@ -188,9 +220,60 @@ if (count($siblings) > 0)
 						</thead>
 						<tbody>
 							<tr>
-								<td scope="col">None</td>
-								<td scope="col">None</td>
-								<td scope="col">None</td>
+								<td style="width: 33%;" scope="col">
+<?php
+$sibling_list = isset($siblings['full']) ? $siblings['full'] : [];
+if (count($sibling_list) == 0)
+{
+	echo "None";
+}
+else
+{
+	foreach ($sibling_list as $sibling)
+	{
+		$sibling_info = Family::getPerson($sibling);
+		showMember(['id' => $sibling_info['id'], 'name' => Family::formatName($sibling_info)]);
+		echo '<br>';
+	}
+}
+?>
+								</td>
+								<td style="width: 33%;" scope="col">
+<?php
+$sibling_list = isset($siblings['half']) ? $siblings['half'] : [];
+if (count($sibling_list) == 0)
+{
+	echo "None";
+}
+else
+{
+	foreach ($sibling_list as $sibling)
+	{
+		$sibling_info = Family::getPerson($sibling);
+		showMember(['id' => $sibling_info['id'], 'name' => Family::formatName($sibling_info)]);
+		echo '<br>';
+	}
+}
+?>
+								</td>
+								<td style="width: 33%;" scope="col">
+<?php
+$sibling_list = isset($siblings['step']) ? $siblings['step'] : [];
+if (count($sibling_list) == 0)
+{
+	echo "None";
+}
+else
+{
+	foreach ($sibling_list as $sibling)
+	{
+		$sibling_info = Family::getPerson($sibling);
+		showMember(['id' => $sibling_info['id'], 'name' => Family::formatName($sibling_info)]);
+		echo '<br>';
+	}
+}
+?>
+								</td>
 							</tr>
 						</tbody>
 					</table>
