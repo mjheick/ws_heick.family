@@ -1,4 +1,26 @@
-<!DOCTYPE html>
+<?php
+/* Session Management */
+if (session_start() === false)
+{
+	echo 'cannot start a session, so we cannot properly secure administration';
+}
+/* Set up some variables */
+$admin = [
+	'authenticated' => false,
+	'user' => 'idp:id',
+	'role' => 'contributor', /* contributor, admin, owner */
+];
+
+/**
+ * Handle inbound GET requests to this page.
+ */
+
+/**
+ * Handle inbound POST requests from this page
+ */
+
+session_write_close();
+?><!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -10,6 +32,10 @@
 	<body>
 		<div class="container">
 <?php require_once("header.php"); ?>
+<?php
+if ($admin['authenticated'] === false)
+{ /* Start of authenticated=false block */
+?>
 		<div class="row">
 			<div class="col text-center">
 				<button class="">Log in with Google</button>
@@ -20,6 +46,15 @@
 				<button class="">Log in with Facebook</button>
 			</div>
 		</div>
+<?php
+} /* End of authenticated=false block */
+if ($admin['authenticated'] === true)
+{ /* Start of authenticated=true block */
+?>
+		Do authenticated stuff
+<?php
+} /* End of authenticated=true block */
+?>
 <?php require_once("footer.php"); ?>
 		 </div>
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>

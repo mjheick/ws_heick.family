@@ -17,7 +17,7 @@ if (strlen($data) < 3)
 }
 
 /* Search our names */
-require_once("Family.php");
+require_once('../lib/Family.php');
 $results = Family::Search($data);
 $response = [];
 foreach ($results as $item)
