@@ -1,4 +1,7 @@
 <?php
+require_once('../lib/auth_facebook.php');
+require_once('../lib/auth_google.php');
+require_once('../lib/Auth.php');
 /* Session Management */
 if (session_start() === false)
 {
@@ -14,10 +17,26 @@ $admin = [
 /**
  * Handle inbound GET requests to this page.
  */
+if (AuthFacebook::isOAuth())
+{
+	$user = AuthFacebook::handleOAuth();
+	$admin['user'] = 'facebook:' . $user['id'];
+	$admin = Auth::getUser($admin['user']);
+}
+if (AuthGoogle::isOAuth())
+{
+	$user = AuthGoogle::handleOAuth();
+	$admin['user'] = 'google:' . $user['id'];
+	$admin = Auth::getUser($admin['user']);
+}
 
 /**
  * Handle inbound POST requests from this page
  */
+if (isset($_POST['action']) && isset($_POST['method']) && isset($_POST['data']))
+{
+	die();
+}
 
 session_write_close();
 ?><!DOCTYPE html>

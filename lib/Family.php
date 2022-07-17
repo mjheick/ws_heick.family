@@ -51,8 +51,8 @@ class Family
 	{
 		$data = [];
 		$person = self::getPerson($id);
-		$parentx = isset($person['parent-x']) ? $person['parent-x'] : 0;
-		$parenty = isset($person['parent-y']) ? $person['parent-y'] : 0;
+		$parentx = isset($person['parent-bio-x']) ? $person['parent-bio-x'] : 0;
+		$parenty = isset($person['parent-bio-y']) ? $person['parent-bio-y'] : 0;
 		$data = [
 			'x' => self::getPerson($parentx),
 			'y' => self::getPerson($parenty),
@@ -87,18 +87,18 @@ class Family
 	public static function getChildren($id = 0)
 	{
 		$data = [];
-		$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . self::_escape($id) . ' OR `parent-y`=' . self::_escape($id) . ')';
+		$query = 'SELECT * FROM `family` WHERE (`parent-bio-x`=' . self::_escape($id) . ' OR `parent-bio-y`=' . self::_escape($id) . ')';
 		$result = self::_query($query);
 		while ($row = mysqli_fetch_assoc($result))
 		{
 			$child = $row['id']; /* This is our kid */
-			if ($row['parent-x'] == $id)
+			if ($row['parent-bio-x'] == $id)
 			{
-				$partner = $row['parent-y'];
+				$partner = $row['parent-bio-y'];
 			}
 			else
 			{
-				$partner = $row['parent-x'];
+				$partner = $row['parent-bio-x'];
 			}
 			if (!isset($data[$partner]))
 			{
@@ -127,14 +127,14 @@ class Family
 		{
 			return $data;
 		}
-		$parentx = $me['parent-x'];
-		$parenty = $me['parent-y'];
+		$parentx = $me['parent-bio-x'];
+		$parenty = $me['parent-bio-y'];
 
 		/* Do a search for full blooded siblings. can only do this if we know both parents */
 		if (($parentx > 0) && ($parenty > 0))
 		{
 			$full_siblings = [];
-			$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . $parentx . ' AND `parent-y`=' . $parenty . ') OR (`parent-x`=' . $parenty . ' AND `parent-y`=' . $parentx . ')';
+			$query = 'SELECT * FROM `family` WHERE (`parent-bio-x`=' . $parentx . ' AND `parent-bio-y`=' . $parenty . ') OR (`parent-bio-x`=' . $parenty . ' AND `parent-bio-y`=' . $parentx . ')';
 			$result = self::_query($query);
 			while ($row = mysqli_fetch_assoc($result))
 			{
@@ -164,7 +164,7 @@ class Family
 			}
 			foreach ($parents as $parent)
 			{
-				$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . $parent . ' OR `parent-y`=' . $parent . ')';
+				$query = 'SELECT * FROM `family` WHERE (`parent-bio-x`=' . $parent . ' OR `parent-bio-y`=' . $parent . ')';
 				$result = self::_query($query);
 				while ($row = mysqli_fetch_assoc($result))
 				{
@@ -220,7 +220,7 @@ class Family
 			}
 			foreach ($step_parents as $step_parent)
 			{
-				$query = 'SELECT * FROM `family` WHERE (`parent-x`=' . $step_parent . ' OR `parent-y`=' . $step_parent . ')';
+				$query = 'SELECT * FROM `family` WHERE (`parent-bio-x`=' . $step_parent . ' OR `parent-bio-y`=' . $step_parent . ')';
 				$result = self::_query($query);
 				while ($row = mysqli_fetch_assoc($result))
 				{

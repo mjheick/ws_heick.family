@@ -16,17 +16,17 @@ if (is_null($me)) {
 }
 
 /* Get the main Lineage handled */
-$parentx = Family::getPerson($me['parent-x']);
-$parenty = Family::getPerson($me['parent-y']);
+$parentx = Family::getPerson($me['parent-bio-x']);
+$parenty = Family::getPerson($me['parent-bio-y']);
 $lineage = [
 	'me' => ['id' => $me['id'], 'name' => Family::formatName($me)],
 	'partner' => ['id' => $me['partner'], 'name' => Family::formatName(Family::getPerson($me['partner']))],
-	'px' => ['id' => $me['parent-x'], 'name' => Family::formatName(Family::getPerson($me['parent-x']))],
-	'py' => ['id' => $me['parent-y'], 'name' => Family::formatName(Family::getPerson($me['parent-y']))],
-	'pxgx' => ['id' => $parentx['parent-x'], 'name' => Family::formatName(Family::getPerson($parentx['parent-x']))],
-	'pxgy' => ['id' => $parentx['parent-y'], 'name' => Family::formatName(Family::getPerson($parentx['parent-y']))],
-	'pygx' => ['id' => $parenty['parent-x'], 'name' => Family::formatName(Family::getPerson($parenty['parent-x']))],
-	'pygy' => ['id' => $parenty['parent-y'], 'name' => Family::formatName(Family::getPerson($parenty['parent-y']))],
+	'px' => ['id' => $me['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($me['parent-bio-x']))],
+	'py' => ['id' => $me['parent-bio-y'], 'name' => Family::formatName(Family::getPerson($me['parent-bio-y']))],
+	'pxgx' => ['id' => $parentx['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($parentx['parent-bio-x']))],
+	'pxgy' => ['id' => $parentx['parent-bio-y'], 'name' => Family::formatName(Family::getPerson($parentx['parent-bio-y']))],
+	'pygx' => ['id' => $parenty['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($parenty['parent-bio-x']))],
+	'pygy' => ['id' => $parenty['parent-bio-y'], 'name' => Family::formatName(Family::getPerson($parenty['parent-bio-y']))],
 ];
 function showMember($l)
 {
