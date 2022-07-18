@@ -22,40 +22,45 @@ class Family
 	 * @todo add caching to this, since it'll be heavily used. prob wanna think about APC
 	 *
 	 * @param integer pk into family table
-	 * @return null|array null if nothing, array of data
+	 * @return array of data from the table or empty array
 	 */
 	public static function getPerson($id = 0)
 	{
-		$data = null;
+		if ($id == 0)
+		{
+			return [];
+		}
 		$query = 'SELECT * FROM `family` WHERE `id`=' . self::_escape($id) . ' LIMIT 1';
 		$result = self::_query($query);
 		if ($result === false)
 		{
-			return null;
+			return [];
 		}
-		while ($row = mysqli_fetch_assoc($result))
-		{
-			$data = $row;
-			return $data;
+		while ($row = mysqli_fetch_assoc($result))	 {
+			return $row;
 		}
-		return null;
+		return [];
 	}
 
 	/**
 	 * Gets a persons parents
 	 *
 	 * @param integer pk into family table
-	 * @return array 2 people who would be considered parents
+	 * @return array people who would be considered parents
 	 */
 	public static function getParents($id = 0)
 	{
 		$data = [];
 		$person = self::getPerson($id);
-		$parentx = isset($person['parent-bio-x']) ? $person['parent-bio-x'] : 0;
-		$parenty = isset($person['parent-bio-y']) ? $person['parent-bio-y'] : 0;
+		$parent_bio_x = isset($person['parent-bio-x']) ? $person['parent-bio-x'] : 0;
+		$parent_bio_y = isset($person['parent-bio-y']) ? $person['parent-bio-y'] : 0;
+		$parent_adopt_a = isset($person['parent-adopt-a']) ? $person['parent-adopt-a'] : 0;
+		$parent_adopt_b = isset($person['parent-adopt-b']) ? $person['parent-adopt-b'] : 0;
 		$data = [
-			'x' => self::getPerson($parentx),
-			'y' => self::getPerson($parenty),
+			'bio-x' => self::getPerson($parent_bio_x),
+			'bio-y' => self::getPerson($parent_bio_y),
+			'adopt-a' => self::getPerson($parent_adopt_a),
+			'adopt-b' => self::getPerson($parent_adopt_b),
 		];
 		return $data;
 	}
@@ -73,7 +78,7 @@ class Family
 		$partner = isset($person['partner']) ? $person['partner'] : 0;
 		if ($partner == 0)
 		{
-			return null;
+			return [];
 		}
 		return self::getPerson($partner);
 	}
@@ -255,6 +260,62 @@ class Family
 	}
 
 	/**
+	 * Returns relevant family members
+	 * 
+	 * @param integer pk into family table
+	 * @return array keys to indexes of parents and parents parents
+	 */
+	public static function getLineage($id = 0)
+	{
+		$lineage = [
+			'partner' => ['id' => 0, 'name' => 'unknown' ],
+			/* parents */
+			'parent-bio-x' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-bio-y' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-adopt-a' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-adopt-b' => ['id' => 0, 'name' => 'unknown' ],
+			/* bio-x bio-parents */
+			'parent-x-parent-bio-x' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-x-parent-bio-y' => ['id' => 0, 'name' => 'unknown' ],
+			/* bio-y bio-parents */
+			'parent-y-parent-bio-x' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-y-parent-bio-y' => ['id' => 0, 'name' => 'unknown' ],
+		];
+
+		/* Partner */
+		$partner = self::getPartner($id);
+		$lineage['partner']['id'] = isset($partner['id']) ? $partner['id'] : 0;
+		$lineage['partner']['name'] = self::formatName(self::getPerson($lineage['partner']['id']));
+
+		/* Get the parents */
+		$parents = self::getParents($id);
+		$lineage['parent-bio-x']['id'] = isset($parents['bio-x']['id']) ? $parents['bio-x']['id'] : 0;
+		$lineage['parent-bio-x']['name'] = self::formatName(self::getPerson($lineage['parent-bio-x']['id']));
+		$lineage['parent-bio-y']['id'] = isset($parents['bio-y']['id']) ? $parents['bio-y']['id'] : 0;
+		$lineage['parent-bio-y']['name'] = self::formatName(self::getPerson($lineage['parent-bio-y']['id']));
+		$lineage['parent-adopt-a']['id'] = isset($parents['adopt-a']['id']) ? $parents['adopt-a']['id'] : 0;
+		$lineage['parent-adopt-a']['name'] = self::formatName(self::getPerson($lineage['parent-adopt-a']['id']));
+		$lineage['parent-adopt-b']['id'] = isset($parents['adopt-b']['id']) ? $parents['adopt-b']['id'] : 0;
+		$lineage['parent-adopt-b']['name'] = self::formatName(self::getPerson($lineage['parent-adopt-b']['id']));
+
+		/* Parent of bio-x */
+		$parents = self::getParents($lineage['parent-bio-x']['id']);
+		$lineage['parent-x-parent-bio-x']['id'] = isset($parents['bio-x']['id']) ? $parents['bio-x']['id'] : 0;
+		$lineage['parent-x-parent-bio-x']['name'] = self::formatName(self::getPerson($lineage['parent-x-parent-bio-x']['id']));
+		$lineage['parent-x-parent-bio-y']['id'] = isset($parents['bio-y']['id']) ? $parents['bio-y']['id'] : 0;
+		$lineage['parent-x-parent-bio-y']['name'] = self::formatName(self::getPerson($lineage['parent-x-parent-bio-y']['id']));
+
+		/* Parent of bio-y */
+		$parents = self::getParents($lineage['parent-bio-y']['id']);
+		$lineage['parent-y-parent-bio-x']['id'] = isset($parents['bio-x']['id']) ? $parents['bio-x']['id'] : 0;
+		$lineage['parent-y-parent-bio-x']['name'] = self::formatName(self::getPerson($lineage['parent-y-parent-bio-x']['id']));
+		$lineage['parent-y-parent-bio-y']['id'] = isset($parents['bio-y']['id']) ? $parents['bio-y']['id'] : 0;
+		$lineage['parent-y-parent-bio-y']['name'] = self::formatName(self::getPerson($lineage['parent-y-parent-bio-y']['id']));
+
+		return $lineage;
+	}
+
+	/**
 	 * Searches names and returns data based on query
 	 *
 	 * @param string what to search for
@@ -286,7 +347,11 @@ class Family
 		{
 			return 'Unknown';
 		}
-		return $id['name'];
+		if (isset($id['name']))
+		{
+			return $id['name'];
+		}
+		return 'Unknown';
 	}
 
 	/**

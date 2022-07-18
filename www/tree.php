@@ -10,15 +10,18 @@ if (is_null($id)) {
 
 /* Lets find whatever the ID is in the database */
 $me = Family::getPerson($id);
-if (is_null($me)) {
+if (!isset($me['id'])) {
 	header("Location: /", 302);
 	die();
 }
 
-/* Get the main Lineage handled */
-$parentx = Family::getPerson($me['parent-bio-x']);
-$parenty = Family::getPerson($me['parent-bio-y']);
-$lineage = [
+/* Storing everything in here */
+$lineage = Family::getLineage($me['id']);
+$lineage['me'] = [
+	'id' => $me['id'],
+	'name' => Family::formatName($me),
+];
+$old_lineage = [
 	'me' => ['id' => $me['id'], 'name' => Family::formatName($me)],
 	'partner' => ['id' => $me['partner'], 'name' => Family::formatName(Family::getPerson($me['partner']))],
 	'px' => ['id' => $me['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($me['parent-bio-x']))],
@@ -73,7 +76,7 @@ function showMember($l)
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
 				<div class="col-4">&nbsp;</div>
-				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgx']); ?></div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-y-parent-bio-y']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
@@ -82,7 +85,7 @@ function showMember($l)
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['px']); ?></div>
+				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-bio-y']); ?></div>
 				<div class="col-4 border-left">&nbsp;</div>
 			</div>
 			<div class="row">
@@ -93,7 +96,7 @@ function showMember($l)
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
 				<div class="col-4 border-left">&nbsp;</div>
-				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pxgy']); ?></div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-y-parent-bio-x']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
@@ -113,7 +116,7 @@ function showMember($l)
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
 				<div class="col-4 border-left">&nbsp;</div>
-				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pygx']); ?></div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-x-parent-bio-y']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
@@ -122,7 +125,7 @@ function showMember($l)
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['py']); ?></div>
+				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-bio-x']); ?></div>
 				<div class="col-4 border-left">&nbsp;</div>
 			</div>
 			<div class="row">
@@ -144,7 +147,7 @@ else
 }
 				?>
 				<div class="col-4">&nbsp;</div>
-				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['pygy']); ?></div>
+				<div title="grandparent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-x-parent-bio-x']); ?></div>
 			</div>
 			<div class="row">
 				<div class="col-12">&nbsp;</div>
