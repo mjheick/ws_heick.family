@@ -1,33 +1,25 @@
 <?php
-require_once('../lib/auth_facebook.php');
 require_once('../lib/auth_google.php');
 require_once('../lib/Auth.php');
 /* Session Management */
-if (session_start() === false)
-{
-	echo 'cannot start a session, so we cannot properly secure administration';
-}
-/* Set up some variables */
-$admin = [
-	'authenticated' => false,
-	'user' => 'idp:id',
-	'role' => 'contributor', /* contributor, admin, owner */
-];
+$sessionData = Auth::startSession();
 
 /**
  * Handle inbound GET requests to this page.
  */
-if (AuthFacebook::isOAuth())
-{
-	$user = AuthFacebook::handleOAuth();
-	$admin['user'] = 'facebook:' . $user['id'];
-	$admin = Auth::getUser($admin['user']);
-}
 if (AuthGoogle::isOAuth())
 {
 	$user = AuthGoogle::handleOAuth();
-	$admin['user'] = 'google:' . $user['id'];
-	$admin = Auth::getUser($admin['user']);
+	if ($user !== false)
+	{
+		Auth::setIdP('google');
+		Auth::setUser($user['id']);
+		Auth::setAuthenticated(true);
+	}
+	Auth::endSession();
+	/* At the end of the oAuth flow we should redirect back to Admin for the session to take effect */
+	header('Location: https://heick.family/admin.php?auth=ok-google', 302);
+	die();
 }
 
 /**
@@ -37,8 +29,7 @@ if (isset($_POST['action']) && isset($_POST['method']) && isset($_POST['data']))
 {
 	die();
 }
-
-session_write_close();
+Auth::endSession();
 ?><!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -52,22 +43,17 @@ session_write_close();
 		<div class="container">
 <?php require_once("header.php"); ?>
 <?php
-if ($admin['authenticated'] === false)
+if (Auth::getAuthenticated() === false)
 { /* Start of authenticated=false block */
 ?>
 		<div class="row">
 			<div class="col text-center">
-				<button class="">Log in with Google</button>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col text-center">
-				<button class="">Log in with Facebook</button>
+				<button class="" onclick="document.location='<?php echo AuthGoogle::getAuthURL(); ?>';">Log in with Google</button>
 			</div>
 		</div>
 <?php
 } /* End of authenticated=false block */
-if ($admin['authenticated'] === true)
+if (Auth::getAuthenticated() === true)
 { /* Start of authenticated=true block */
 ?>
 		Do authenticated stuff
