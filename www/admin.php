@@ -37,6 +37,7 @@ Auth::endSession();
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 		<link rel="stylesheet" href="/media/theme.css">
+		<link rel="stylesheet" href="/media/admin.css">
 		<title>heick.family</title>
 	</head>
 	<body>
@@ -56,7 +57,100 @@ if (Auth::getAuthenticated() === false)
 if (Auth::getAuthenticated() === true)
 { /* Start of authenticated=true block */
 ?>
-		Do authenticated stuff
+		<div class="row">
+			<!-- list of people, and add new button -->
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Select One:</span>
+				</div>
+				<select class="form-control"><option>First Middle Last</option></select>
+			</div>
+
+			<div class="col-6 text-center"><button class="btn btn-primary">Add New</button></div>
+		</div>
+		<!-- a list of data -->
+	<div id="workspace"><!-- hidden until needed -->
+		<div class="row">
+			<div class="col-12"><hr /></div>
+		</div>
+		<!-- name    | parent x -->
+		<!-- dob     | parent y -->
+		<!-- dod     | adopted x -->
+		<!-- partner | adopted y -->
+		<div class="row">
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Name:</span>
+				</div>
+				<input type="text" class="form-control" placeholder="Name" />
+			</div>
+
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Parent X:</span>
+				</div>
+				<select class="form-control"><option>First Middle Last</option></select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Date Of Birth:</span>
+				</div>
+				<input type="date" class="form-control" />
+			</div>
+
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Parent Y:</span>
+				</div>
+				<select class="form-control"><option>First Middle Last</option></select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Date Of Death:</span>
+				</div>
+				<input type="date" class="form-control" />
+			</div>
+
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Adopted X:</span>
+				</div>
+				<select class="form-control"><option>First Middle Last</option></select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Partner:</span>
+				</div>
+				<select class="form-control"><option>First Middle Last</option></select>
+			</div>
+
+			<div class="input-group col-6">
+				<div class="iput-group-prepend">
+					<span class="input-group-text">Adopted Y:</span>
+				</div>
+				<select class="form-control"><option>First Middle Last</option></select>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12"><hr /></div>
+		</div>
+
+		<!-- buttons -->
+		<div class="row">
+			<div class="col-6 text-center"><button class="btn btn-primary">Save</button></div>
+			<div class="col-6 text-center"><button class="btn btn-info">Cancel</button></div>
+		</div>
+	</div><!-- end of workspace -->
 <?php
 } /* End of authenticated=true block */
 ?>

@@ -1,4 +1,4 @@
-body, input, table, tr, td {
+body, table, tr, td {
 	background: black;
 	color: white;
 }
@@ -28,4 +28,8 @@ body {
 }
 .background-black {
 	background-color: black;
+}
+input[type=derp] {
+    background: black;
+    color: white;
 }

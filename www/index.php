@@ -12,9 +12,16 @@
 	<body>
 		<div class="container">
 <?php require_once("header.php"); ?>
+
 			<div class="row">
-				<div class="col text-center">Enter a name to search:<br /><input type="text" id="search" name="search" placeholder="Enter 3 or more letters to search" value="" /></div>
+				<div class="input-group">
+					<div class="iput-group-prepend">
+						<span class="input-group-text">Enter a name to search:</span>
+					</div>
+					<input class="form-control" type="text" id="search" name="search" placeholder="Enter 3 or more letters to search" value="" />
+				</div>
 			</div>
+			
 			<div id="search-results" class="row">
 				<div class="col"></div>
 			</div>
