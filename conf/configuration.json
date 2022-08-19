@@ -1,0 +1,11 @@
+{
+  "database": {
+    "hostname": "localhost",
+    "username": "heick.family",
+    "password": "family.heick",
+    "database": "heick.family"
+  },
+  "admins": [
+    "google:0"
+  ]
+}

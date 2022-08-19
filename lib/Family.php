@@ -5,14 +5,6 @@
 
 class Family
 {
-	/* MySQL connection data */
-	private static $database = [
-		'hostname' => 'localhost',
-		'username' => 'heick.family',
-		'password' => 'family.heick',
-		'database' => 'heick.family',
-	];
-
 	/* When we connect to the db this is our handle */
 	private static $link = null;
 
@@ -473,7 +465,8 @@ class Family
 		{
 			return;
 		}
-		$db = self::$database;
+		$config = json_decode(file_get_contents('../conf/configuration.json'), true);
+		$db = $config['database'];
 		self::$link = mysqli_connect($db['hostname'], $db['username'], $db['password'], $db['database']);
 		if (mysqli_connect_errno())
 		{
