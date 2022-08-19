@@ -6,7 +6,6 @@ class Auth
 		'authenticated' => false,
 		'idp' => '',
 		'user' => '',
-		'role' => 'contributor', /* contributor, admin, owner */
 	];
 
 	public static function startSession()
@@ -37,9 +36,27 @@ class Auth
 		self::$sessionData['user'] = $user;
 	}
 
-	public static function getID()
+	public static function getIdentity()
 	{
-		return self::$user;
+		$id = '';
+		if (self::$sessionData['idp'] == '')
+		{
+			$id = 'unset';
+		}
+		else
+		{
+			$id = self::$sessionData['idp'];
+		}
+		$id .= ':';
+		if (self::$sessionData['user'] == '')
+		{
+			$id .= 'unset';
+		}
+		else
+		{
+			$id .= self::$sessionData['user'];
+		}
+		return $id;
 	}
 
 	public static function getAuthenticated()

@@ -23,11 +23,25 @@ if (AuthGoogle::isOAuth())
 	die();
 }
 
+/* Test if we're allowed to use this page or not. Simple true/false flag for "admin" */
+$admin = false;
+if (Auth::getAuthenticated() === true)
+{
+	$config = json_decode(file_get_contents('../conf/configuration.json'), true);
+	$admins = $config['admins'];
+	$id = Auth::getIdentity();
+	if (in_array($id, $admins))
+	{
+		$admin = true;
+	}
+}
+
 /**
  * Handle inbound POST requests from this page, only if authenticated
  */
-if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
-	$data = file_get_contents('php://input'); /* Attempt to get JSON POSTed DATA */
+if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST') && $admin) {
+	/* Attempt to get JSON POSTed DATA */
+	$data = file_get_contents('php://input');
 	if ($data !== false)
 	{
 		$data = json_decode($data, true);
@@ -77,7 +91,7 @@ Auth::endSession();
 		<link rel="stylesheet" href="/media/admin.css">
 		<title>heick.family</title>
 <?php
-if (Auth::getAuthenticated() === true) { /* Start of Administrative Javascript */
+if ((Auth::getAuthenticated() === true) && $admin) { /* Start of Administrative Javascript */
 ?>
 		<script>
 let Family = [];
@@ -277,8 +291,20 @@ if (Auth::getAuthenticated() === false)
 		</div>
 <?php
 } /* End of authenticated=false block */
-if (Auth::getAuthenticated() === true)
-{ /* Start of authenticated=true block */
+if ((Auth::getAuthenticated() === true) && !$admin)
+{ /* Start of authenticated=true but not admin */
+?>
+		<div class="row">
+			<div class="col">
+				<p class="text-center">
+				You're logged in but you're currently not allowed to administrate this area. If you'd like to administrate this area please email <span class="font-weight-bold">heick.family.admin@heick.email</span> with a request to adminstrate and provide <span class="font-weight-bold"><?php echo Auth::getIdentity(); ?></span>
+			</p>
+			</div>
+		</div>
+<?php
+} /* End of authenticated=true but not admin */
+if ((Auth::getAuthenticated() === true) && $admin)
+{ /* Start of authenticated=true and admin block */
 ?>
 		<div class="row">
 			<!-- list of people, and add new button -->
@@ -376,7 +402,7 @@ if (Auth::getAuthenticated() === true)
 		</div>
 	</div><!-- end of workspace -->
 <?php
-} /* End of authenticated=true block */
+} /* End of authenticated=true and admin block */
 ?>
 <?php require_once("footer.php"); ?>
 		 </div>
