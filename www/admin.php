@@ -59,7 +59,7 @@ if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST'
 		if ($data['action'] == 'getperson')
 		{
 			$lineage = Family::getPerson($data['id']);
-			$data = [
+			$output = [
 				'id' => $data['id'],
 				'name' => $lineage['name'],
 				'dob' => $lineage['dob'],
@@ -70,12 +70,12 @@ if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST'
 				'adoptx' => $lineage['parent-adopt-a'],
 				'adopty' => $lineage['parent-adopt-b'],
 			];
-			echo json_encode($data);
+			echo json_encode($output);
 		}
 		if ($data['action'] == 'updateperson')
 		{
-			$response = Family::modify($data);
-			echo json_encode($response);
+			$output = Family::modify($data);
+			echo json_encode($output);
 		}
 		die();
 	}

@@ -76,7 +76,25 @@ function showMember($l)
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-bio-y']); ?></div>
+				<div title="parent" class="col-4 text-center border-full background-black"><?php
+if ((($lineage['parent-bio-y']['id'] != 0) && ($lineage['parent-adopt-b']['id'] != 0)) || ($lineage['parent-adopt-b']['id'] != 0))
+	if ($lineage['parent-bio-y']['id'] == 0)
+	{
+		showMember($lineage['parent-adopt-b']);
+		echo '(adopted)';
+	}
+	else
+	{
+		showMember($lineage['parent-bio-y']);
+		echo '&nbsp;(bio)';
+		echo '<br />';
+		showMember($lineage['parent-adopt-b']);
+		echo '&nbsp;(adopted)';
+	}
+else {
+	showMember($lineage['parent-bio-y']);
+}
+?></div>
 				<div class="col-4 border-left">&nbsp;</div>
 			</div>
 			<div class="row">
@@ -116,7 +134,25 @@ function showMember($l)
 			</div>
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
-				<div title="parent" class="col-4 text-center border-full background-black"><?php showMember($lineage['parent-bio-x']); ?></div>
+				<div title="parent" class="col-4 text-center border-full background-black"><?php
+if ((($lineage['parent-bio-x']['id'] != 0) && ($lineage['parent-adopt-a']['id'] != 0)) || ($lineage['parent-adopt-a']['id'] != 0))
+	if ($lineage['parent-bio-x']['id'] == 0)
+	{
+		showMember($lineage['parent-adopt-a']);
+		echo '(adopted)';
+	}
+	else
+	{
+		showMember($lineage['parent-bio-x']);
+		echo '&nbsp;(bio)';
+		echo '<br />';
+		showMember($lineage['parent-adopt-a']);
+		echo '&nbsp;(adopted)';
+	}
+else {
+	showMember($lineage['parent-bio-x']);
+}
+?></div>
 				<div class="col-4 border-left">&nbsp;</div>
 			</div>
 			<div class="row">
