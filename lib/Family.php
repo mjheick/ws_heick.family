@@ -426,7 +426,7 @@ class Family
 			$query .= ' WHERE `id`=' . self::_escape($data['id']) . ' LIMIT 1';
 			$res = self::_query($query);
 		}
-		return ['status' => 'OK', 'query' => $query];
+		return ['status' => 'OK'];
 	}
 
 	/**
