@@ -21,16 +21,7 @@ $lineage['me'] = [
 	'id' => $me['id'],
 	'name' => Family::formatName($me),
 ];
-$old_lineage = [
-	'me' => ['id' => $me['id'], 'name' => Family::formatName($me)],
-	'partner' => ['id' => $me['partner'], 'name' => Family::formatName(Family::getPerson($me['partner']))],
-	'px' => ['id' => $me['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($me['parent-bio-x']))],
-	'py' => ['id' => $me['parent-bio-y'], 'name' => Family::formatName(Family::getPerson($me['parent-bio-y']))],
-	'pxgx' => ['id' => $parentx['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($parentx['parent-bio-x']))],
-	'pxgy' => ['id' => $parentx['parent-bio-y'], 'name' => Family::formatName(Family::getPerson($parentx['parent-bio-y']))],
-	'pygx' => ['id' => $parenty['parent-bio-x'], 'name' => Family::formatName(Family::getPerson($parenty['parent-bio-x']))],
-	'pygy' => ['id' => $parenty['parent-bio-y'], 'name' => Family::formatName(Family::getPerson($parenty['parent-bio-y']))],
-];
+
 function showMember($l)
 {
 	if ($l['id'] == 0)
@@ -174,7 +165,14 @@ foreach ($children as $parent => $childs)
 	echo "\t\t\t\t" . '<div class="col-2 background-black">Parent</div>' . "\n";
 	echo "\t\t\t\t" . '<div class="col-4 background-black">';
 	$parent_info = Family::getPerson($parent);
-	showMember(['id' => $parent_info['id'], 'name' => Family::formatName($parent_info)]);
+	if (isset($parent_info['id']))
+	{
+		showMember(['id' => $parent_info['id'], 'name' => Family::formatName($parent_info)]);
+	}
+	else
+	{
+		echo "Unknown";
+	}
 	echo '</div>' . "\n";
 	echo "\t\t\t\t" . '<div class="col-2">&nbsp;</div>' . "\n";
 	echo "\t\t\t" . '</div>' . "\n";

@@ -173,7 +173,7 @@ class Family
 			}
 			if (count($half_siblings) > 0)
 			{
-				if (count($data['full']) > 0)
+				if (isset($data['full']) && (count($data['full']) > 0))
 				{
 					/* If we have 'full' siblings we'll need to cull them out of this list */
 					$data['half'] = [];
