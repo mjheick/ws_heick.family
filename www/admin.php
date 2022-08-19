@@ -1,6 +1,7 @@
 <?php
 require_once('../lib/auth_google.php');
 require_once('../lib/Auth.php');
+require_once('../lib/Family.php');
 /* Session Management */
 $sessionData = Auth::startSession();
 
@@ -23,11 +24,47 @@ if (AuthGoogle::isOAuth())
 }
 
 /**
- * Handle inbound POST requests from this page
+ * Handle inbound POST requests from this page, only if authenticated
  */
-if (isset($_POST['action']) && isset($_POST['method']) && isset($_POST['data']))
-{
-	die();
+if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
+	$data = file_get_contents('php://input'); /* Attempt to get JSON POSTed DATA */
+	if ($data !== false)
+	{
+		$data = json_decode($data, true);
+		if (!isset($data['action'])) { die(json_encode([]));}
+		if ($data['action'] == 'getpeople')
+		{
+			$members = Family::getAllFamily();
+			$output = [];
+			foreach ($members as $id => $name)
+			{
+				$output[] = ["id" => $id, "name" => $name];
+			}
+			echo json_encode($output);
+		}
+		if ($data['action'] == 'getperson')
+		{
+			$lineage = Family::getPerson($data['id']);
+			$data = [
+				'id' => $data['id'],
+				'name' => $lineage['name'],
+				'dob' => $lineage['dob'],
+				'dod' => $lineage['dod'],
+				'partner' => $lineage['partner'],
+				'parentx' => $lineage['parent-bio-x'],
+				'parenty' => $lineage['parent-bio-y'],
+				'adoptx' => $lineage['parent-adopt-a'],
+				'adopty' => $lineage['parent-adopt-b'],
+			];
+			echo json_encode($data);
+		}
+		if ($data['action'] == 'updateperson')
+		{
+			$response = Family::modify($data);
+			echo json_encode($response);
+		}
+		die();
+	}
 }
 Auth::endSession();
 ?><!DOCTYPE html>
@@ -39,6 +76,192 @@ Auth::endSession();
 		<link rel="stylesheet" href="/media/theme.css">
 		<link rel="stylesheet" href="/media/admin.css">
 		<title>heick.family</title>
+<?php
+if (Auth::getAuthenticated() === true) { /* Start of Administrative Javascript */
+?>
+		<script>
+let Family = [];
+
+function hookActions()
+{
+	document.getElementById('btn_addnew').addEventListener('click', btnAddNew);
+	document.getElementById('btn_save').addEventListener('click', btnSave);
+	document.getElementById('btn_cancel').addEventListener('click', btnCancel);
+	document.getElementById('select_one').addEventListener('change', loadPerson);
+	loadPeople();
+}
+
+function setupPage()
+{
+	/* Dropdowns dropdown */
+	let dropdowns = ['select_one', 'parent_x', 'parent_y', 'adopted_x', 'adopted_y', 'partner'];
+	for (y = 0; y < dropdowns.length; y++)
+	{
+
+		let d = document.getElementById(dropdowns[y]);
+		/* clear the options */
+		d.innerHTML = '';
+		let o = document.createElement("option");
+		o.value = '';
+		o.text = '';
+		d.add(o);
+		for (let x = 0; x < Family.length; x++)
+		{
+			o = document.createElement("option");
+			o.value = Family[x].id;
+			o.text = Family[x].name;
+			d.add(o);
+		}
+	}
+	document.getElementById('current_id').value = '';
+	document.getElementById('name').value = '';
+	document.getElementById('date_of_birth').value = '';
+	document.getElementById('date_of_death').value = '';
+	document.getElementById('select_one').disabled = false;
+	document.getElementById('btn_addnew').disabled = false;
+}
+
+function loadPeople()
+{
+	let data = {"action": "getpeople"};
+	let xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState == 4) && (xhr.status == 200))
+		{
+			Family = JSON.parse(xhr.responseText);
+			setupPage();
+		}
+	};
+	xhr.open('POST', 'admin.php', true);
+	xhr.send(JSON.stringify(data));
+}
+
+function loadPerson() /* executed from select_one::change */
+{
+	let o = document.getElementById('select_one');
+	let idx = o.options[o.selectedIndex].value;
+	if (idx.length == 0) { return; }
+
+	let data = {"action": "getperson", "id": idx};
+
+	let xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState == 4) && (xhr.status == 200)) {
+			let people = JSON.parse(xhr.responseText);
+			/* Fill in the blanks of the form */
+			document.getElementById('name').value = people.name;
+			if (people.dob == '0000-00-00')
+			{
+				document.getElementById('date_of_birth').value = '';
+			}
+			else
+			{
+				document.getElementById('date_of_birth').value = people.dob;
+			}
+			if (people.dod == '0000-00-00')
+			{
+				document.getElementById('date_of_death').value = '';
+			}
+			else
+			{
+				document.getElementById('date_of_death').value = people.dod;
+			}
+			/* Must match what's selected */
+			let dropdown_selectors = [
+				{ 'element': 'partner', 'value': people.partner },
+				{ 'element': 'parent_x', 'value': people.parentx },
+				{ 'element': 'parent_y', 'value': people.parenty },
+				{ 'element': 'adopted_x', 'value': people.adoptx },
+				{ 'element': 'adopted_y', 'value': people.adopty },
+			];
+			for (d = 0; d < dropdown_selectors.length; d++)
+			{
+				if (dropdown_selectors[d].value == 0)
+				{
+					document.getElementById(dropdown_selectors[d].element).selectedIndex = 0;
+				}
+				else
+				{
+					for (let s = 0; s < document.getElementById(dropdown_selectors[d].element).options.length; s++)
+					{
+						if (document.getElementById(dropdown_selectors[d].element).options[s].value == dropdown_selectors[d].value)
+						{
+							document.getElementById(dropdown_selectors[d].element).options[s].selected = true;
+						}
+					}
+				}
+			}
+			document.getElementById('current_id').value = people.id;
+			document.getElementById('workspace').style.display = 'block';
+		}
+	};
+	xhr.open('POST', 'admin.php', true);
+	xhr.send(JSON.stringify(data));
+}
+
+function btnCancel()
+{
+	document.getElementById('workspace').style.display = 'none';
+	setupPage();
+}
+
+function btnAddNew()
+{
+	setupPage();
+	document.getElementById('select_one').disabled = true;
+	document.getElementById('workspace').style.display = 'block';
+}
+
+function btnSave()
+{
+	/* quick check for "valid" data */
+	if (document.getElementById('current_id').value == '' && document.getElementById('name').value == '')
+	{
+		return;
+	}
+	/* Disable everything until we get a response */
+	document.getElementById('select_one').disabled = true;
+	document.getElementById('btn_addnew').disabled = true;
+	document.getElementById('workspace').style.display = 'none';
+
+	let xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if ((xhr.readyState == 4) && (xhr.status == 200)) {
+			let response = JSON.parse(xhr.responseText);
+			if (response.status == 'OK')
+			{
+				loadPeople();
+			}
+			if (response.status == 'error')
+			{
+				alert('some problem occured...');
+				document.getElementById('workspace').style.display = 'block';
+			}
+		}
+	};
+	let data = {
+		'action': 'updateperson',
+		'id': document.getElementById('current_id').value,
+		'name': document.getElementById('name').value,
+		'dob': document.getElementById('date_of_birth').value,
+		'dod': document.getElementById('date_of_death').value,
+		'partner': document.getElementById('partner').options[document.getElementById('partner').selectedIndex].value,
+		'parentx': document.getElementById('parent_x').options[document.getElementById('parent_x').selectedIndex].value,
+		'parenty': document.getElementById('parent_y').options[document.getElementById('parent_y').selectedIndex].value,
+		'adoptx': document.getElementById('adopted_x').options[document.getElementById('adopted_x').selectedIndex].value,
+		'adopty': document.getElementById('adopted_y').options[document.getElementById('adopted_y').selectedIndex].value,
+	};
+
+	xhr.open('POST', 'admin.php', true);
+	xhr.send(JSON.stringify(data));
+}
+
+
+window.onload = hookActions;
+		</script>
+<?php
+} /* End of Administrative Javascript */
+?>
 	</head>
 	<body>
 		<div class="container">
@@ -63,13 +286,14 @@ if (Auth::getAuthenticated() === true)
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Select One:</span>
 				</div>
-				<select class="form-control"><option>First Middle Last</option></select>
+				<select id="select_one" class="form-control"><option>First Middle Last</option></select>
 			</div>
 
-			<div class="col-6 text-center"><button class="btn btn-primary">Add New</button></div>
+			<div class="col-6 text-center"><button id='btn_addnew' class="btn btn-primary">Add New</button></div>
 		</div>
 		<!-- a list of data -->
 	<div id="workspace"><!-- hidden until needed -->
+		<input id="current_id" type="hidden" value="" />
 		<div class="row">
 			<div class="col-12"><hr /></div>
 		</div>
@@ -82,14 +306,14 @@ if (Auth::getAuthenticated() === true)
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Name:</span>
 				</div>
-				<input type="text" class="form-control" placeholder="Name" />
+				<input id="name" type="text" class="form-control" placeholder="Name" />
 			</div>
 
 			<div class="input-group col-6">
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Parent X:</span>
 				</div>
-				<select class="form-control"><option>First Middle Last</option></select>
+				<select id="parent_x" class="form-control"><option>First Middle Last</option></select>
 			</div>
 		</div>
 
@@ -98,14 +322,14 @@ if (Auth::getAuthenticated() === true)
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Date Of Birth:</span>
 				</div>
-				<input type="date" class="form-control" />
+				<input id="date_of_birth" type="date" class="form-control" />
 			</div>
 
 			<div class="input-group col-6">
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Parent Y:</span>
 				</div>
-				<select class="form-control"><option>First Middle Last</option></select>
+				<select id="parent_y" class="form-control"><option>First Middle Last</option></select>
 			</div>
 		</div>
 
@@ -114,14 +338,14 @@ if (Auth::getAuthenticated() === true)
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Date Of Death:</span>
 				</div>
-				<input type="date" class="form-control" />
+				<input id="date_of_death" type="date" class="form-control" />
 			</div>
 
 			<div class="input-group col-6">
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Adopted X:</span>
 				</div>
-				<select class="form-control"><option>First Middle Last</option></select>
+				<select id="adopted_x" class="form-control"><option>First Middle Last</option></select>
 			</div>
 		</div>
 
@@ -130,14 +354,14 @@ if (Auth::getAuthenticated() === true)
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Partner:</span>
 				</div>
-				<select class="form-control"><option>First Middle Last</option></select>
+				<select id="partner" class="form-control"><option>First Middle Last</option></select>
 			</div>
 
 			<div class="input-group col-6">
 				<div class="iput-group-prepend">
 					<span class="input-group-text">Adopted Y:</span>
 				</div>
-				<select class="form-control"><option>First Middle Last</option></select>
+				<select id="adopted_y" class="form-control"><option>First Middle Last</option></select>
 			</div>
 		</div>
 
@@ -147,8 +371,8 @@ if (Auth::getAuthenticated() === true)
 
 		<!-- buttons -->
 		<div class="row">
-			<div class="col-6 text-center"><button class="btn btn-primary">Save</button></div>
-			<div class="col-6 text-center"><button class="btn btn-info">Cancel</button></div>
+			<div class="col-6 text-center"><button id='btn_save' class="btn btn-primary">Save</button></div>
+			<div class="col-6 text-center"><button id='btn_cancel' class="btn btn-info">Cancel</button></div>
 		</div>
 	</div><!-- end of workspace -->
 <?php

@@ -322,10 +322,10 @@ class Family
 	 * @param integer maximum amount of results to query for
 	 * @return array results
 	 */
-	public static function Search($query = '', $results = 10)
+	public static function Search($question = '', $results = 10)
 	{
-		$query = str_replace(' ', '%', $query);
-		$query = 'SELECT * FROM `family` WHERE `name` LIKE "%' . self::_escape($query) . '%" LIMIT ' . $results;
+		$question = str_replace(' ', '%', $question);
+		$query = 'SELECT * FROM `family` WHERE `name` LIKE "%' . self::_escape($question) . '%" LIMIT ' . $results;
 		$res = self::_query($query);
 		$data = [];
 		while ($row = mysqli_fetch_assoc($res))
@@ -352,6 +352,89 @@ class Family
 			return $id['name'];
 		}
 		return 'Unknown';
+	}
+
+	/**
+	 * Gets a list of all family members
+	 * 
+	 * @return array key/value of index/family member
+	 */
+	public static function getAllFamily()
+	{
+		$query = 'SELECT `id`,`name` FROM `family` ORDER BY `name` ASC';
+		$res = self::_query($query);
+		$data = [];
+		while ($row = mysqli_fetch_assoc($res))
+		{
+			$data[$row['id']] = $row['name'];
+		}
+		return $data;
+	}
+
+	public static function modify($data = [])
+	{
+		/* Verify that all fields exist in struture before continuing on */
+		$fields = ['id', 'name', 'dob', 'dod', 'partner', 'parentx', 'parenty', 'adoptx', 'adopty'];
+		foreach ($fields as $field)
+		{
+			if (!array_key_exists($field, $data))
+			{
+				return ['status' => 'error'];
+			}
+		}
+		/* Verify that numerical fields have numbers */
+		foreach (['partner', 'parentx', 'parenty', 'adoptx', 'adopty'] as $z)
+		{
+			if ($data[$z] == '')
+			{
+				$data[$z] = 0;
+			}
+		}
+		$sql_fields = [
+			'name' => 'name',
+			'parent-bio-x' => 'parentx',
+			'parent-bio-y' => 'parenty',
+			'parent-adopt-a' => 'adoptx',
+			'parent-adopt-b' => 'adopty',
+			'partner' => 'partner',
+			'dob' => 'dob',
+			'dod' => 'dod'
+		];
+		if ($data['id'] == '')
+		{
+			/* This is a new person */
+			$query = 'INSERT INTO `family` (`name`, `parent-bio-x`, `parent-bio-y`, `parent-adopt-a`, `parent-adopt-b`, `partner`, `dob`, `dod`) VALUES (';
+			$comma = false;
+			foreach ($sql_fields as $u => $f)
+			{
+				if ($comma)
+				{
+					$query .= ',';
+				}
+				$query .= '"' . self::_escape($data[$f]) . '"';
+				$comma = true;
+			}
+			$query .= ')';
+			$res = self::_query($query);
+		}
+		else
+		{
+			/* This would be an update */
+			$query = 'UPDATE `family` SET ';
+			$comma = false;
+			foreach ($sql_fields as $u => $f)
+			{
+				if ($comma)
+				{
+					$query .= ',';
+				}
+				$query .= '`' . $u . '`="' . self::_escape($data[$f]) . '"';
+				$comma = true;
+			}
+			$query .= ' WHERE `id`=' . self::_escape($data['id']) . ' LIMIT 1';
+			$res = self::_query($query);
+		}
+		return ['status' => 'OK', 'query' => $query];
 	}
 
 	/**
