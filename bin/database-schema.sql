@@ -34,7 +34,7 @@ CREATE TABLE `family` (
   `dod` char(10) NOT NULL DEFAULT '0000-00-00' COMMENT 'date of death ymd',
   `lastupdated` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `family` (
 
 LOCK TABLES `family` WRITE;
 /*!40000 ALTER TABLE `family` DISABLE KEYS */;
-INSERT INTO `family` VALUES (1,'Matthew James Heick',4,3,0,0,2,'1981-10-14','0000-00-00','2022-01-12 02:04:20'),(2,'Molly Marie Neri',0,0,0,0,1,'1981-01-17','0000-00-00','2022-01-12 02:04:20'),(3,'James Robert Heick',0,0,0,0,0,'0000-00-00','0000-00-00','2022-01-12 02:04:20'),(4,'Ardelle Marie Myers',0,0,0,0,0,'0000-00-00','0000-00-00','2022-01-12 02:04:20'),(5,'Brian Patrick Heick',4,3,0,0,0,'1983-04-28','0000-00-00','2022-02-09 02:00:53'),(6,'Michelle Lee Heick',4,3,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:01:30'),(7,'Michael Shane Heick',4,3,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:01:58'),(8,'Mark Andrew Heick',4,3,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:02:27'),(9,'Jennifer Renee Everson',0,0,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:03:20'),(10,'Devon Orion Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:04:39'),(11,'Angelique Renee-Marie Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:03:53'),(12,'James Rexford Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:04:04'),(13,'Savannah Lee Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:04:18'),(14,'Cara Mia Heick',1,2,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:06:39'),(15,'Michael Muraco',0,0,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:08:19'),(16,'Kariah Grace Neri',2,15,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:08:42');
+INSERT INTO `family` VALUES (1,'Matthew James Heick',4,3,0,0,2,'1981-10-14','0000-00-00','2022-01-12 02:04:20'),(2,'Molly Marie Neri',0,0,0,0,1,'1981-01-17','0000-00-00','2022-01-12 02:04:20'),(3,'James Robert Heick',0,0,0,0,0,'0000-00-00','0000-00-00','2022-01-12 02:04:20'),(4,'Ardelle Marie Myers',0,0,0,0,0,'0000-00-00','0000-00-00','2022-01-12 02:04:20'),(5,'Brian Patrick Heick',4,3,0,0,0,'1983-04-28','0000-00-00','2022-02-09 02:00:53'),(6,'Michelle Lee Heick',4,3,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:01:30'),(7,'Michael Shane Heick',4,3,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:01:58'),(8,'Mark Andrew Heick',4,3,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:02:27'),(9,'Jennifer Renee Everson',18,0,0,0,0,'','','2022-08-19 03:26:24'),(10,'Devon Orion Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:04:39'),(11,'Angelique Renee-Marie Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:03:53'),(12,'James Rexford Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:04:04'),(13,'Savannah Lee Heick',1,9,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:04:18'),(14,'Cara Mia Heick',1,2,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:06:39'),(15,'Michael Muraco',0,0,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:08:19'),(16,'Kariah Grace Neri',2,15,0,0,0,'0000-00-00','0000-00-00','2022-02-09 02:08:42'),(17,'Derpy McDerpFace Heick',0,0,0,0,0,'1979-01-01','2022-08-15','2022-08-19 03:24:51'),(18,'Grant Rexford Everson',0,0,0,0,0,'1947-10-11','2016-11-25','2022-08-19 03:26:18');
 /*!40000 ALTER TABLE `family` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-07-17 23:47:36
+-- Dump completed on 2022-08-19  3:28:58
