@@ -1,19 +1,25 @@
 # Project: Family Tree
 
-Simply need a simple way to display a simple family tree.
+Lets make a Family Tree.
 
-# Storage Tables
+# family database table
 
-This is how we plan to store all the data we need to make sure this is easy to navigate
-
-## family
-
-Things we need to store in the database per-person would be:
+Every person gets stored the same way:
 
 - id: a unique identifier, probably some number, that references this specific record
 - name: No need to separate out first/mid/last. Just store the persons name
-- parent-x: Index to one of the two parents of this person
-- parent-y: Index to one of the two parents of this person
+- parent-bio-x: Index to one of the two biological parents of this person
+- parent-bio-y: Index to one of the two biological parents of this person
+- parent-adopt-a: Index to one of the two adopted parents of this person
+- parent-adopt-b: Index to one of the two adopted parents of this person
 - partner: Index to the partner to create step-relationships
 - dob: A date of birth. This would be a string but in yyyy-mm-dd format, and 00 or 0000 would signify initialization
 - dod: A date of death. defaults to 0000-00-00, same format as dob
+
+# TODO
+
+- 'about' page, cause authors need their soapbox (needs more work)
+- last 5 modified on homepage
+- auditing. table w/ idx, who, when, sql, and rollback
+- uploading and tagging images/video
+
