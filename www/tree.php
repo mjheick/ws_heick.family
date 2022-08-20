@@ -22,15 +22,39 @@ $lineage['me'] = [
 	'name' => Family::formatName($me),
 ];
 
-function showMember($l)
+function showMember($fam, $extra = '')
 {
-	if ($l['id'] == 0)
+	if ($fam['id'] == 0)
 	{
-		echo $l['name'];
+		echo $fam['name'];
 	}
 	else
 	{
-		echo '<a href="?id=' . $l['id'] . '">' . $l['name'] . '</a>';
+		echo '<a href="?id=' . $fam['id'] . '">' . $fam['name'] . '</a>';
+		if (strlen($extra) > 0)
+		{
+			echo '&nbsp;' . $extra;
+		}
+		/* subtext dob/dod */
+		$data = Family::getPerson($fam['id']);
+		$subtext = '';
+		if ($data['dob'] != '0000-00-00')
+		{
+			$subtext .= 'B:' . date("M j Y", strtotime($data['dob']));
+		}
+		if ($data['dod'] != '0000-00-00')
+		{
+			if (strlen($subtext) > 0)
+			{
+				$subtext .= ', ';
+			}
+			$subtext .= 'D:' . date("M j Y", strtotime($data['dod']));
+		}
+		if (strlen($subtext) > 0)
+		{
+			echo '<br />';
+			echo '<span class="small">' . $subtext . '</span>';
+		}
 	}
 }
 
@@ -80,16 +104,13 @@ function showMember($l)
 if ((($lineage['parent-bio-y']['id'] != 0) && ($lineage['parent-adopt-b']['id'] != 0)) || ($lineage['parent-adopt-b']['id'] != 0))
 	if ($lineage['parent-bio-y']['id'] == 0)
 	{
-		showMember($lineage['parent-adopt-b']);
-		echo '(adopted)';
+		showMember($lineage['parent-adopt-b'], '(adopted)');
 	}
 	else
 	{
-		showMember($lineage['parent-bio-y']);
-		echo '&nbsp;(bio)';
+		showMember($lineage['parent-bio-y'], '(bio)');
 		echo '<br />';
-		showMember($lineage['parent-adopt-b']);
-		echo '&nbsp;(adopted)';
+		showMember($lineage['parent-adopt-b'], '(adopted)');
 	}
 else {
 	showMember($lineage['parent-bio-y']);
@@ -138,16 +159,13 @@ else {
 if ((($lineage['parent-bio-x']['id'] != 0) && ($lineage['parent-adopt-a']['id'] != 0)) || ($lineage['parent-adopt-a']['id'] != 0))
 	if ($lineage['parent-bio-x']['id'] == 0)
 	{
-		showMember($lineage['parent-adopt-a']);
-		echo '(adopted)';
+		showMember($lineage['parent-adopt-a'], '(adopted)');
 	}
 	else
 	{
-		showMember($lineage['parent-bio-x']);
-		echo '&nbsp;(bio)';
+		showMember($lineage['parent-bio-x'], '(bio)');
 		echo '<br />';
-		showMember($lineage['parent-adopt-a']);
-		echo '&nbsp;(adopted)';
+		showMember($lineage['parent-adopt-a'], '(adopted)');
 	}
 else {
 	showMember($lineage['parent-bio-x']);
@@ -324,5 +342,10 @@ else
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+		<script>
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+		</script>
 	</body>
 </html>

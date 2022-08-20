@@ -382,6 +382,14 @@ class Family
 				$data[$z] = 0;
 			}
 		}
+		/* verify that dates should have dates */
+		foreach (['dob', 'dod'] as $z)
+		{
+			if (($data[$z] == '') || ($data[$z] == 0))
+			{
+				$data[$z] = '0000-00-00';
+			}
+		}
 		$sql_fields = [
 			'name' => 'name',
 			'parent-bio-x' => 'parentx',
