@@ -74,6 +74,8 @@ if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST'
 		}
 		if ($data['action'] == 'updateperson')
 		{
+			$who = Auth::getIdentity();
+			$data['whoami'] = $who;
 			$output = Family::modify($data);
 			echo json_encode($output);
 		}

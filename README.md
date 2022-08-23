@@ -18,6 +18,5 @@ Every person gets stored the same way:
 
 # TODO
 
-- auditing. table w/ idx, who, when, sql, and rollback
 - uploading and tagging images/video
 - "text" field per person for...information?...

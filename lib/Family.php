@@ -365,6 +365,7 @@ class Family
 
 	public static function modify($data = [])
 	{
+		$whoami = isset($data['whoami']) ? $data['whoami'] : 'unknown:-';
 		/* Verify that all fields exist in struture before continuing on */
 		$fields = ['id', 'name', 'dob', 'dod', 'partner', 'parentx', 'parenty', 'adoptx', 'adopty'];
 		foreach ($fields as $field)
@@ -434,6 +435,9 @@ class Family
 			$query .= ' WHERE `id`=' . self::_escape($data['id']) . ' LIMIT 1';
 			$res = self::_query($query);
 		}
+		/* Update audit */
+		$audit = 'INSERT INTO `audit` (`entry`, `who`, `query`) VALUES (NOW(), "' . $whoami . '", "' . self::_escape($query) . '");';
+		self::_query($audit);
 		return ['status' => 'OK'];
 	}
 
