@@ -46,13 +46,13 @@ class Family
 		$person = self::getPerson($id);
 		$parent_bio_x = isset($person['parent-bio-x']) ? $person['parent-bio-x'] : 0;
 		$parent_bio_y = isset($person['parent-bio-y']) ? $person['parent-bio-y'] : 0;
-		$parent_adopt_a = isset($person['parent-adopt-a']) ? $person['parent-adopt-a'] : 0;
-		$parent_adopt_b = isset($person['parent-adopt-b']) ? $person['parent-adopt-b'] : 0;
+		$parent_adopt_a = isset($person['parent-adopt-x']) ? $person['parent-adopt-x'] : 0;
+		$parent_adopt_b = isset($person['parent-adopt-y']) ? $person['parent-adopt-y'] : 0;
 		$data = [
 			'bio-x' => self::getPerson($parent_bio_x),
 			'bio-y' => self::getPerson($parent_bio_y),
-			'adopt-a' => self::getPerson($parent_adopt_a),
-			'adopt-b' => self::getPerson($parent_adopt_b),
+			'adopt-x' => self::getPerson($parent_adopt_a),
+			'adopt-y' => self::getPerson($parent_adopt_b),
 		];
 		return $data;
 	}
@@ -264,8 +264,8 @@ class Family
 			/* parents */
 			'parent-bio-x' => ['id' => 0, 'name' => 'unknown' ],
 			'parent-bio-y' => ['id' => 0, 'name' => 'unknown' ],
-			'parent-adopt-a' => ['id' => 0, 'name' => 'unknown' ],
-			'parent-adopt-b' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-adopt-x' => ['id' => 0, 'name' => 'unknown' ],
+			'parent-adopt-y' => ['id' => 0, 'name' => 'unknown' ],
 			/* bio-x bio-parents */
 			'parent-x-parent-bio-x' => ['id' => 0, 'name' => 'unknown' ],
 			'parent-x-parent-bio-y' => ['id' => 0, 'name' => 'unknown' ],
@@ -285,10 +285,10 @@ class Family
 		$lineage['parent-bio-x']['name'] = self::formatName(self::getPerson($lineage['parent-bio-x']['id']));
 		$lineage['parent-bio-y']['id'] = isset($parents['bio-y']['id']) ? $parents['bio-y']['id'] : 0;
 		$lineage['parent-bio-y']['name'] = self::formatName(self::getPerson($lineage['parent-bio-y']['id']));
-		$lineage['parent-adopt-a']['id'] = isset($parents['adopt-a']['id']) ? $parents['adopt-a']['id'] : 0;
-		$lineage['parent-adopt-a']['name'] = self::formatName(self::getPerson($lineage['parent-adopt-a']['id']));
-		$lineage['parent-adopt-b']['id'] = isset($parents['adopt-b']['id']) ? $parents['adopt-b']['id'] : 0;
-		$lineage['parent-adopt-b']['name'] = self::formatName(self::getPerson($lineage['parent-adopt-b']['id']));
+		$lineage['parent-adopt-x']['id'] = isset($parents['adopt-x']['id']) ? $parents['adopt-x']['id'] : 0;
+		$lineage['parent-adopt-x']['name'] = self::formatName(self::getPerson($lineage['parent-adopt-x']['id']));
+		$lineage['parent-adopt-y']['id'] = isset($parents['adopt-y']['id']) ? $parents['adopt-y']['id'] : 0;
+		$lineage['parent-adopt-y']['name'] = self::formatName(self::getPerson($lineage['parent-adopt-y']['id']));
 
 		/* Parent of bio-x */
 		$parents = self::getParents($lineage['parent-bio-x']['id']);
@@ -394,8 +394,8 @@ class Family
 			'name' => 'name',
 			'parent-bio-x' => 'parentx',
 			'parent-bio-y' => 'parenty',
-			'parent-adopt-a' => 'adoptx',
-			'parent-adopt-b' => 'adopty',
+			'parent-adopt-x' => 'adoptx',
+			'parent-adopt-y' => 'adopty',
 			'partner' => 'partner',
 			'dob' => 'dob',
 			'dod' => 'dod'
@@ -403,7 +403,7 @@ class Family
 		if ($data['id'] == '')
 		{
 			/* This is a new person */
-			$query = 'INSERT INTO `family` (`name`, `parent-bio-x`, `parent-bio-y`, `parent-adopt-a`, `parent-adopt-b`, `partner`, `dob`, `dod`) VALUES (';
+			$query = 'INSERT INTO `family` (`name`, `parent-bio-x`, `parent-bio-y`, `parent-adopt-x`, `parent-adopt-y`, `partner`, `dob`, `dod`) VALUES (';
 			$comma = false;
 			foreach ($sql_fields as $u => $f)
 			{

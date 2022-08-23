@@ -33,7 +33,7 @@ class Stuff extends Family
 		}
 		foreach ($data as $idx => $item)
 		{
-			foreach (['parent-bio-x', 'parent-bio-y', 'parent-adopt-a', 'parent-adopt-b', 'partner'] as $column)
+			foreach (['parent-bio-x', 'parent-bio-y', 'parent-adopt-x', 'parent-adopt-y', 'partner'] as $column)
 			{
 				if ($item[$column] > 0)
 				{

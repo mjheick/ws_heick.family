@@ -67,8 +67,8 @@ if ((Auth::getAuthenticated() === true) && ($_SERVER['REQUEST_METHOD'] == 'POST'
 				'partner' => $lineage['partner'],
 				'parentx' => $lineage['parent-bio-x'],
 				'parenty' => $lineage['parent-bio-y'],
-				'adoptx' => $lineage['parent-adopt-a'],
-				'adopty' => $lineage['parent-adopt-b'],
+				'adoptx' => $lineage['parent-adopt-x'],
+				'adopty' => $lineage['parent-adopt-y'],
 			];
 			echo json_encode($output);
 		}

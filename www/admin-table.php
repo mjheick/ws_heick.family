@@ -50,12 +50,12 @@ foreach ($table as $item)
 
 	echo '<td>';
 	echo $item['parent-bio-x'] . '<br />';
-	echo $item['parent-adopt-a'];
+	echo $item['parent-adopt-x'];
 	echo '</td>';
 
 	echo '<td>';
 	echo $item['parent-bio-y'] . '<br />';
-	echo $item['parent-adopt-b'];
+	echo $item['parent-adopt-y'];
 	echo '</td>';
 	echo '</tr>';
 }

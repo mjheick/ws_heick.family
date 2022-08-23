@@ -101,16 +101,16 @@ function showMember($fam, $extra = '')
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
 				<div title="parent" class="col-4 text-center border-full background-black"><?php
-if ((($lineage['parent-bio-y']['id'] != 0) && ($lineage['parent-adopt-b']['id'] != 0)) || ($lineage['parent-adopt-b']['id'] != 0))
+if ((($lineage['parent-bio-y']['id'] != 0) && ($lineage['parent-adopt-y']['id'] != 0)) || ($lineage['parent-adopt-y']['id'] != 0))
 	if ($lineage['parent-bio-y']['id'] == 0)
 	{
-		showMember($lineage['parent-adopt-b'], '(adopted)');
+		showMember($lineage['parent-adopt-y'], '(adopted)');
 	}
 	else
 	{
 		showMember($lineage['parent-bio-y'], '(bio)');
 		echo '<br />';
-		showMember($lineage['parent-adopt-b'], '(adopted)');
+		showMember($lineage['parent-adopt-y'], '(adopted)');
 	}
 else {
 	showMember($lineage['parent-bio-y']);
@@ -156,16 +156,16 @@ else {
 			<div class="row">
 				<div class="col-4">&nbsp;</div>
 				<div title="parent" class="col-4 text-center border-full background-black"><?php
-if ((($lineage['parent-bio-x']['id'] != 0) && ($lineage['parent-adopt-a']['id'] != 0)) || ($lineage['parent-adopt-a']['id'] != 0))
+if ((($lineage['parent-bio-x']['id'] != 0) && ($lineage['parent-adopt-x']['id'] != 0)) || ($lineage['parent-adopt-x']['id'] != 0))
 	if ($lineage['parent-bio-x']['id'] == 0)
 	{
-		showMember($lineage['parent-adopt-a'], '(adopted)');
+		showMember($lineage['parent-adopt-x'], '(adopted)');
 	}
 	else
 	{
 		showMember($lineage['parent-bio-x'], '(bio)');
 		echo '<br />';
-		showMember($lineage['parent-adopt-a'], '(adopted)');
+		showMember($lineage['parent-adopt-x'], '(adopted)');
 	}
 else {
 	showMember($lineage['parent-bio-x']);
