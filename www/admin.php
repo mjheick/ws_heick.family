@@ -330,9 +330,9 @@ if ((Auth::getAuthenticated() === true) && $admin)
 		<div class="row">
 			<div class="input-group col-6">
 				<div class="iput-group-prepend">
-					<span class="input-group-text">Name:</span>
+					<span class="input-group-text" title="First Middle Maiden Last">Name:</span>
 				</div>
-				<input id="name" type="text" class="form-control" placeholder="Name" />
+				<input id="name" type="text" class="form-control" placeholder="First Middle Maiden Last" />
 			</div>
 
 			<div class="input-group col-6">

@@ -14,12 +14,17 @@
 			<!-- using non-functional nav tabs as graphical visual separators -->
 			<div class="row">
 				<div class="col">
-					About:
+					<h2>About:</h2>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					Welcome to the heick.family website. This website is authoried by Matthew Heick.
+					Welcome to the heick.family website. This website is authoried by <a href="https://heick.family/tree.php?id=1" target="_blank">Matthew Heick</a> with the background image selected by <a href="https://heick.family/tree.php?id=11" target="_blank">Angelique Heick</a>.
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					This website is meant to be a quick reference to how family trees can be stored and displayed. It is open source and the code is publicly available.
 				</div>
 			</div>
 <?php require_once("footer.php"); ?>

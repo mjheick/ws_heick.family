@@ -11,7 +11,7 @@ a {
 }
 a:hover {
     color: goldenrod;
-    background: black;
+    background-color: black;
     text-decoration: none;
 }
 .header-href {
@@ -32,4 +32,7 @@ body {
 input[type=derp] {
     background: black;
     color: white;
+}
+div.col {
+    background-color: black;
 }

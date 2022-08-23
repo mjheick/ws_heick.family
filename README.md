@@ -18,8 +18,6 @@ Every person gets stored the same way:
 
 # TODO
 
-- 'about' page, cause authors need their soapbox (needs more work)
 - auditing. table w/ idx, who, when, sql, and rollback
-- Admin helper text
 - uploading and tagging images/video
 - "text" field per person for...information?...
