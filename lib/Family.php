@@ -28,7 +28,7 @@ class Family
 		{
 			return [];
 		}
-		while ($row = mysqli_fetch_assoc($result))	 {
+		while ($row = mysqli_fetch_assoc($result)) {
 			return $row;
 		}
 		return [];
@@ -443,7 +443,7 @@ class Family
 	 * @param string query to send to mysql
 	 * @return Mysqli_Result a mysql result
 	 */
-	private static function _query($query = null)
+	protected static function _query($query = null)
 	{
 		if (is_null($query))
 		{
@@ -457,7 +457,7 @@ class Family
 	/**
 	 * shorthand real_escape_string, since we just wanna make neater things
 	 */
-	private static function _escape($string = "")
+	protected static function _escape($string = "")
 	{
 		self::_connect();
 		return mysqli_real_escape_string(self::$link, $string);
@@ -467,7 +467,7 @@ class Family
 	 * Initiates a connection to the MySQL database
 	 * @throws Exception something wrong w/ the database
 	 */
-	private static function _connect()
+	protected static function _connect()
 	{
 		if (!is_null(self::$link))
 		{

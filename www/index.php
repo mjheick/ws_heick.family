@@ -1,5 +1,6 @@
 <?php
 /* Do something PHP */
+require_once('../lib/Stuff.php');
 ?><!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -25,6 +26,17 @@
 			<div id="search-results" class="row">
 				<div class="col"></div>
 			</div>
+			<hr />
+			<div class="row">
+				<div class="col text-center"><h3>Recent Entries/Edits</h2></div>
+			</div>
+<?php
+$recent = Stuff::getLastModified();
+foreach ($recent as $value)
+{
+	echo "\t\t\t" . '<div class="row"><div class="col text-center"><a href="tree.php?id=' . $value['id'] . '">' . $value['name'] . '</a></div></div>' . "\n";
+}
+?>
 <?php require_once("footer.php"); ?>
 		 </div>
 		<script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
