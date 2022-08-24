@@ -229,16 +229,15 @@ class Family
 			}
 			if (count($step_siblings) > 0)
 			{
-				if (count($data['half']) > 0)
+				if ((count($data['half']) > 0) || (count($data['full']) > 0))
 				{
-					/* If we have 'half' siblings we'll need to cull them out of this list. queries are too "near" */
+					/* If we have 'half' or 'full' siblings we'll need to cull them out of this list. queries are too "near" */
 					$data['step'] = [];
 					foreach ($step_siblings as $p)
 					{
-						if (!in_array($p, $data['half']))
+						if (!in_array($p, $data['half']) && !in_array($p, $data['full']))
 						{
 							$data['step'][] = $p;
-
 						}
 					}
 				}
