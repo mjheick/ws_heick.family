@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.php
+
+Sitemap: https://heick.family/sitemap.xml
