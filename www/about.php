@@ -19,12 +19,11 @@
 			</div>
 			<div class="row">
 				<div class="col">
-					Welcome to the heick.family website. This website is authoried by <a href="https://heick.family/tree.php?id=1" target="_blank">Matthew Heick</a> with the background image selected by <a href="https://heick.family/tree.php?id=11" target="_blank">Angelique Heick</a>.
-				</div>
-			</div>
-			<div class="row">
-				<div class="col">
-					This website is meant to be a quick reference to how family trees can be stored and displayed. It is open source and the code is publicly available.
+					<p>
+					Welcome to the heick.family website. This website is authoried by <a href="https://heick.family/tree.php?id=1" target="_blank">Matthew Heick</a> with the background image selected by <a href="https://heick.family/tree.php?id=11" target="_blank">Angelique Heick</a>.</p>
+					<p>This website is meant to be a quick reference to how family trees can be stored and displayed. It is open source and the code is publicly available.</p>
+					<p>Most information that is used as reference would be stored in a publicly accessible Google Drive folder at <a href="https://drive.google.com/drive/folders/1TUadaDUHt7oG3vYQGaqAbGkpn3FpQmVn?usp=sharing" target="_blank">https://drive.google.com/drive/folders/1TUadaDUHt7oG3vYQGaqAbGkpn3FpQmVn?usp=sharing</a></p>
+					<p>If you have any questions/comments/concerns or would like it assist in making this better/faster/awesomer please email heick.family.admin@heick.email</p>
 				</div>
 			</div>
 <?php require_once("footer.php"); ?>
