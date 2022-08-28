@@ -1,2 +1,5 @@
 # We have no reason to commit saved pictures of family members
 www/media/family/
+
+# A dynamic file
+www/sitemap.xml
