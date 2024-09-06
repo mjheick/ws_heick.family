@@ -38,15 +38,15 @@ function showMember($fam, $extra = '')
 		/* subtext dob/dod */
 		$data = Family::getPerson($fam['id']);
 		$subtext = '';
-		if ($data['dob'] != '0000-00-00')
-		{
-			$subtext .= 'B:' . date("M j Y", strtotime($data['dob']));
-		}
 		if ($data['dod'] != '0000-00-00')
 		{
+			if ($data['dob'] != '0000-00-00')
+			{
+				$subtext .= 'B:' . date("M j Y", strtotime($data['dob']));
+			}
 			if (strlen($subtext) > 0)
 			{
-				$subtext .= ', ';
+				$subtext .= ',&nbsp;';
 			}
 			$subtext .= 'D:' . date("M j Y", strtotime($data['dod']));
 		}
@@ -65,8 +65,8 @@ function showMember($fam, $extra = '')
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 		<title>heick.family</title>
-		<link rel="stylesheet" href="/media/theme.css">
-		<link rel="stylesheet" href="/media/tree.css">
+		<link rel="stylesheet" href="media/theme.css">
+		<link rel="stylesheet" href="media/tree.css">
 	</head>
 	<body>
 		<div class="container">

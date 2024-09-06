@@ -22,7 +22,7 @@ a:hover {
     text-decoration: none;
 }
 body {
-    background-image: url('/media/family-tree-fixed.svg');
+    background-image: url('media/family-tree-fixed.svg');
     background-size: cover;
     background-repeat: no-repeat;
 }
