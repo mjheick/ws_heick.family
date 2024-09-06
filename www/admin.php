@@ -19,7 +19,7 @@ if (AuthGoogle::isOAuth())
 	}
 	Auth::endSession();
 	/* At the end of the oAuth flow we should redirect back to Admin for the session to take effect */
-	header('Location: https://heick.family/admin.php?auth=ok-google', 302);
+	header('Location: https://unliterate.net/heick.family/admin.php?auth=ok-google', 302);
 	die();
 }
 

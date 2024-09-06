@@ -17,8 +17,8 @@ class AuthGoogle
 		'project_id' => 'heick-family-website',
 		'client_id' => '898332180753-9j46esr5mqo1a0499t3l1s8vpmt71sd6.apps.googleusercontent.com',
 		'client_secret' => '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',
-		'redirect_uri' => 'https://heick.family/admin.php',
-		'oauth_client_json' => '{"web":{"client_id":"898332180753-9j46esr5mqo1a0499t3l1s8vpmt71sd6.apps.googleusercontent.com","project_id":"heick-family-website","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["https://heick.family/admin.php"]}}',
+		'redirect_uri' => 'https://unliterate.net/heick.family/admin.php',
+		'oauth_client_json' => '{"web":{"client_id":"898332180753-9j46esr5mqo1a0499t3l1s8vpmt71sd6.apps.googleusercontent.com","project_id":"heick-family-website","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"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","redirect_uris":["https://unliterate.net/heick.family/admin.php"]}}',
 	];
 
 	public static function isOAuth()
