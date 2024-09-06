@@ -23,6 +23,13 @@ if (AuthGoogle::isOAuth())
 	die();
 }
 
+if (isset($_GET['log']) && $_GET['log'] == 'out') {
+	Auth::setAuthenticated();
+	Auth::endSession();
+	header('Location: https://unliterate.net/heick.family/admin.php');
+	die();
+}
+
 /* Test if we're allowed to use this page or not. Simple true/false flag for "admin" */
 $admin = false;
 if (Auth::getAuthenticated() === true)
@@ -404,7 +411,7 @@ if ((Auth::getAuthenticated() === true) && $admin)
 		</div>
 	</div><!-- end of workspace -->
 		<div class="row">
-			<div class="col text-center"><a href="admin-table.php">Family Table</a></div>
+			<div class="col text-center"><a href="admin-table.php">Family Table</a> | <a href="?log=out">Logout</a></div>
 		</div>
 <?php
 } /* End of authenticated=true and admin block */
