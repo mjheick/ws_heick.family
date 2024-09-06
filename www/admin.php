@@ -307,8 +307,11 @@ if ((Auth::getAuthenticated() === true) && !$admin)
 			<div class="col">
 				<p class="text-center">
 				You're logged in but you're currently not allowed to administrate this area. If you'd like to administrate this area please email <span class="font-weight-bold">heick.family.admin@heick.email</span> with a request to adminstrate and provide <span class="font-weight-bold"><?php echo Auth::getIdentity(); ?></span>
-			</p>
+				</p>
 			</div>
+		</div>
+		<div class="row">
+			<div class="col"><a href="?log=out">Logout</a></div>
 		</div>
 <?php
 } /* End of authenticated=true but not admin */
